@@ -1121,7 +1121,7 @@ function renderKCard(p) {
   }).join('');
   const statusBadge = `<span class="k-status-badge" style="background:${gc.bg};color:${gc.text}">${p.estatus}</span>`;
   const areaArr = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
-  const areaBadge = areaArr.map(a => { const info = AREA_COLORS[a]; return info ? `<span class="badge" title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px;flex-shrink:0">${info.emoji}</span>` : ''; }).join('');
+  const areaBadge = areaArr.map(a => { const info = AREA_COLORS[a]; return info ? `<span class="badge" title="${a}" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 7px">${info.emoji} ${a}</span>` : ''; }).join('');
   const linkBadge = p.link ? `<a class="k-link-badge" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="${escapeHtml(p.link)}" onclick="event.stopPropagation()"><svg viewBox="0 0 13 13" fill="none"><path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8M8 1h4m0 0v4m0-4L5.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : '';
   const bucket = getDisplayBucket(p);
   // Mes de salida (solo lectura en card; editable desde el modal)
