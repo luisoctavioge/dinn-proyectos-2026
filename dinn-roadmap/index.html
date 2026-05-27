@@ -107,6 +107,10 @@
 
     .kanban-head { padding:10px 12px 9px;background:var(--white);border-radius:var(--radius-md) var(--radius-md) 0 0;border:1.5px solid #DDF0EE;border-bottom:none;display:flex;align-items:center;justify-content:space-between;gap:6px;user-select:none;flex-shrink:0; }
     .kanban-head.is-current  { border-color:var(--teal);border-top-width:3px;background:#F0FAF9; }
+    .kanban-col.archived-col .kanban-head { border-color:#E7E5E4;background:#FAFAF9; }
+    .kanban-col.archived-col .kanban-body { border-color:#E7E5E4;background:#FAFAF9; }
+    .kanban-col.archived-col .k-card { opacity:.65;border-color:#E7E5E4; }
+    .kanban-col.archived-col .k-card:hover { opacity:.85; }
     .kanban-head.is-current .kanban-month { color:var(--pine); }
     .kanban-head.is-current .kanban-cnt   { background:var(--yellow);color:#7A5900; }
     .kanban-head.is-h2bucket { border-color:#BFDBFE;border-top:3px solid #3B82F6;background:#EFF6FF; }
@@ -194,13 +198,6 @@
     .tl-row:last-child  { border-bottom:none; }
     .tl-row:nth-child(odd) .tl-data-cell  { background:var(--white); }
     .tl-row:nth-child(even) .tl-data-cell { background:#FAFEFE; }
-    .tl-row:nth-child(odd) .tl-pilar-label  { background:var(--white); }
-    .tl-row:nth-child(even) .tl-pilar-label { background:#FAFEFE; }
-
-    /* Pilar sticky column */
-    .tl-pilar-label { width:150px;flex-shrink:0;padding:8px 12px;border-right:1px solid #DDF0EE;position:sticky;left:0;z-index:6;display:flex;flex-direction:column;justify-content:center;gap:4px; }
-    .tl-pilar-name  { font-size:11px;font-weight:600;line-height:1.2; }
-    .tl-pilar-count { font-size:9px;font-weight:700;color:var(--white);background:var(--pine);padding:1px 6px;border-radius:10px;display:inline-block;width:fit-content; }
 
     /* Semester group headers */
     .tl-sem-cell { flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-txt);border-right:1px solid #DDF0EE;padding:4px 6px; }
@@ -208,7 +205,6 @@
     .tl-sem-cell.h2b-group { flex:1;background:#EFF6FF;border-top:2px solid #3B82F6;color:#1D4ED8; }
     .tl-sem-cell.h2-group  { flex:6;background:#F5FFFE;border-top:2px solid var(--fresno);color:#0A6B62; }
     .tl-sem-cell.bl-group  { flex:1;background:#FAFAFA;border-top:2px solid #CBD5E1;color:#64748B;border-right:none; }
-    .tl-pilar-sem { width:150px;flex-shrink:0;border-right:1px solid #DDF0EE;position:sticky;left:0;z-index:6;background:#FAFEFE; }
 
     /* Month header cells */
     .tl-m-head { flex:1;min-width:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border-right:1px solid #EEF6F5;font-size:9px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.4px;background:#FAFEFE;cursor:pointer;transition:background var(--t),color var(--t),min-width .22s ease; }
@@ -266,26 +262,31 @@
     .notes-panel-header { display:flex;align-items:center;gap:8px;padding:16px 18px 12px;border-bottom:1px solid var(--olive);flex-shrink:0; }
     .notes-panel-title { font-size:11px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.6px;flex:1; }
     .notes-panel-count { font-size:10px;font-weight:600;color:var(--gray-txt);background:var(--olive);padding:1px 7px;border-radius:10px; }
-    .notes-list { flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px; }
+    .notes-list { flex:1;overflow-y:auto;padding:16px 14px 8px 14px;display:flex;flex-direction:column;gap:0; }
     .notes-list::-webkit-scrollbar { width:4px; }
     .notes-list::-webkit-scrollbar-track { background:transparent; }
     .notes-list::-webkit-scrollbar-thumb { background:transparent; }
     .notes-list:hover::-webkit-scrollbar-thumb { background:var(--fresno); }
     .notes-empty { font-size:12px;color:#CBD5E1;font-style:italic;text-align:center;padding:32px 0; }
-    .note-item { background:var(--white);border:1px solid #E8F4F3;border-radius:var(--radius-md);padding:10px 12px;display:flex;flex-direction:column;gap:5px; }
-    .note-meta { display:flex;align-items:center;justify-content:space-between;gap:6px; }
-    .note-date { font-size:10px;font-weight:500;color:#94A3B8; }
-    .note-edited { font-style:italic;color:#CBD5E1; }
+    /* Timeline entries */
+    .note-item { display:flex;gap:12px;position:relative;padding-bottom:20px; }
+    .note-item:not(:last-child)::before { content:'';position:absolute;left:5px;top:16px;bottom:0;width:1.5px;background:#DDF0EE;z-index:0; }
+    .note-dot { width:12px;height:12px;border-radius:50%;background:var(--pine);border:2px solid #fff;box-shadow:0 0 0 1.5px var(--pine);flex-shrink:0;margin-top:3px;position:relative;z-index:1; }
+    .note-item:last-child .note-dot { background:var(--teal);box-shadow:0 0 0 1.5px var(--teal); }
+    .note-content { flex:1;min-width:0; }
+    .note-meta { display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px; }
+    .note-date { font-size:10px;font-weight:600;color:#94A3B8; }
+    .note-edited { font-style:italic;color:#CBD5E1;font-weight:400; }
     .note-edit-btn { font-family:'Poppins',sans-serif;font-size:10px;font-weight:500;color:var(--pine);background:none;border:none;cursor:pointer;padding:1px 6px;border-radius:3px;transition:background var(--t);flex-shrink:0; }
     .note-edit-btn:hover { background:var(--olive); }
-    .note-body { font-size:12px;color:var(--elm);line-height:1.65;word-break:break-word; }
+    .note-body { font-size:12px;color:#374151;line-height:1.7;word-break:break-word;background:#FAFFFE;border:1px solid #E8F4F3;border-radius:8px;padding:9px 11px; }
     .note-edit-textarea { font-family:'Poppins',sans-serif;font-size:12px;color:var(--elm);line-height:1.6;width:100%;min-height:60px;border:1.5px solid var(--pine);border-radius:var(--radius-sm);padding:6px 8px;outline:none;resize:vertical;background:#F0FAF9; }
     .note-edit-actions { display:flex;gap:6px;margin-top:6px; }
     .note-edit-save { font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;color:var(--white);background:var(--pine);border:none;border-radius:var(--radius-sm);padding:4px 12px;cursor:pointer; }
     .note-edit-cancel { font-family:'Poppins',sans-serif;font-size:10px;color:var(--gray-txt);background:var(--olive);border:none;border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer; }
     .notes-input-area { padding:10px 14px;border-top:1px solid var(--olive);flex-shrink:0; }
     .notes-input-wrap { position:relative; }
-    .notes-textarea { font-family:'Poppins',sans-serif;font-size:12px;color:var(--elm);line-height:1.6;width:100%;min-height:82px;border:1.5px solid #DDF0EE;border-radius:var(--radius-md);padding:8px 10px 36px 10px;outline:none;resize:none;background:var(--white);transition:border-color var(--t); }
+    .notes-textarea { font-family:'Poppins',sans-serif;font-size:12px;color:var(--elm);line-height:1.6;width:100%;min-height:72px;border:1.5px solid #DDF0EE;border-radius:var(--radius-md);padding:8px 10px 36px 10px;outline:none;resize:none;background:var(--white);transition:border-color var(--t); }
     .notes-textarea:focus { border-color:var(--pine); }
     .notes-post-btn { position:absolute;bottom:8px;right:8px;display:flex;align-items:center;gap:5px;font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;color:var(--white);background:var(--pine);border:none;border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;transition:background var(--t),opacity var(--t); }
     .notes-post-btn:hover:not(:disabled) { background:#0A5550; }
@@ -295,12 +296,12 @@
     .modal-meta { display:flex;flex-wrap:wrap;gap:5px; }
     .modal-close { font-family:'Poppins',sans-serif;font-size:18px;line-height:1;color:var(--gray-txt);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;flex-shrink:0; }
     .modal-close:hover { background:var(--olive);color:var(--elm); }
-    .modal-title-row { display:flex;align-items:flex-start;gap:8px;margin:12px 0 18px; }
-    .modal-title { font-size:20px;font-weight:600;color:var(--elm);line-height:1.35;flex:1;margin:0; }
-    .modal-title-edit-btn { flex-shrink:0;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:4px;color:var(--gray-txt);display:flex;align-items:center;margin-top:3px;transition:all var(--t); }
+    .modal-title-row { display:flex;align-items:flex-start;gap:8px;margin:14px 0 20px; }
+    .modal-title { font-size:22px;font-weight:700;color:var(--elm);line-height:1.3;flex:1;margin:0; }
+    .modal-title-edit-btn { flex-shrink:0;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:4px;color:var(--gray-txt);display:flex;align-items:center;margin-top:4px;transition:all var(--t); }
     .modal-title-edit-btn:hover { background:var(--olive);color:var(--pine); }
     .modal-title-edit-btn svg { width:13px;height:13px; }
-    .modal-title-input { font-family:'Poppins',sans-serif;font-size:20px;font-weight:600;color:var(--elm);border:none;border-bottom:2px solid var(--pine);background:transparent;outline:none;width:100%;padding:2px 0;line-height:1.35; }
+    .modal-title-input { font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--elm);border:none;border-bottom:2px solid var(--pine);background:transparent;outline:none;width:100%;padding:2px 0;line-height:1.3; }
     .modal-title-actions { display:flex;gap:6px;margin-top:6px; }
     .modal-title-save   { font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;color:var(--white);background:var(--pine);border:none;border-radius:var(--radius-sm);padding:5px 14px;cursor:pointer;transition:background var(--t); }
     .modal-title-save:hover { background:#0A5550; }
@@ -320,52 +321,23 @@
     .modal-confirm-yes:hover { background:#B91C1C; }
     .modal-confirm-yes:disabled { opacity:.6;cursor:wait; }
     .modal-confirm-no { font-family:'Poppins',sans-serif;font-size:12px;color:var(--gray-txt);background:var(--olive);border:none;border-radius:var(--radius-sm);padding:7px 12px;cursor:pointer; }
-    .modal-status-bar { display:flex;align-items:center;gap:10px;padding:14px 0;border-top:1px solid var(--olive);border-bottom:1px solid var(--olive);margin-bottom:18px; }
-    .modal-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
-    .modal-status-label { font-size:12px;font-weight:500;color:var(--elm);flex:1; }
-    .modal-select-wrap { position:relative; }
-    .modal-select { font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;color:var(--pine);background:var(--olive);border:1.5px solid #DDF0EE;border-radius:var(--radius-sm);padding:7px 32px 7px 12px;appearance:none;cursor:pointer;outline:none;min-width:190px; }
-    .modal-select:focus { border-color:var(--pine); }
-    .modal-select:disabled { opacity:.6;cursor:not-allowed; }
-    .modal-select-wrap::after { content:'';position:absolute;right:11px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--pine);pointer-events:none; }
-    /* ── Pilar toggle ──────────────────────────────────────────── */
-    .pilar-toggle { display:flex;flex-wrap:wrap;gap:5px;padding:6px 0; }
-    .ptoggle-btn { font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;padding:5px 11px;border-radius:20px;border:1.5px solid #DDF0EE;background:transparent;color:var(--gray-txt);cursor:pointer;transition:all var(--t);white-space:nowrap; }
+    .modal-status-bar { display:flex;align-items:center;gap:6px;padding:0 0 20px;margin-bottom:0; }
+    .modal-spinner { width:16px;height:16px;border:2px solid var(--fresno);border-top-color:var(--pine);border-radius:50%;animation:spin .6s linear infinite;display:none;flex-shrink:0;margin-left:4px; }
+    /* ── Status group toggle — pills independientes ────────────── */
+    .status-group-toggle { display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0; }
+    .sgt-btn { font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;padding:5px 13px;border-radius:20px;border:1.5px solid #DDF0EE;background:transparent;color:var(--gray-txt);cursor:pointer;transition:all 150ms ease;white-space:nowrap; }
+    .sgt-btn:hover:not(.active) { border-color:var(--teal);color:var(--pine);background:var(--olive); }
+    .sgt-btn.active { background:var(--pine);border-color:var(--pine);color:#fff;font-weight:600; }
+    /* ── Toggle buttons (area) ────────────────────────────────── */
+    .pilar-toggle { display:flex;flex-wrap:wrap;gap:5px;padding:4px 0 2px; }
+    .ptoggle-btn { font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;border:1.5px solid #DDF0EE;background:transparent;color:var(--gray-txt);cursor:pointer;transition:all 150ms ease;white-space:nowrap; }
     .ptoggle-btn:hover { border-color:var(--teal);color:var(--pine); }
     .ptoggle-btn.active { border-color:transparent;color:#fff;font-weight:600; }
-    /* ── Status group toggle ───────────────────────────────────── */
-    .status-group-toggle { display:flex;border:1.5px solid #DDF0EE;border-radius:var(--radius-sm);overflow:hidden;flex-shrink:0; }
-    .sgt-btn { font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;padding:6px 11px;border:none;border-right:1px solid #DDF0EE;background:transparent;color:var(--gray-txt);cursor:pointer;transition:all var(--t);white-space:nowrap; }
-    .sgt-btn:last-child { border-right:none; }
-    .sgt-btn:hover:not(.active) { background:var(--olive);color:var(--elm); }
-    .sgt-btn.active { background:var(--pine);color:#fff;font-weight:600; }
-    .modal-spinner { width:16px;height:16px;border:2px solid var(--fresno);border-top-color:var(--pine);border-radius:50%;animation:spin .6s linear infinite;display:none;flex-shrink:0; }
-    /* ── To-do stepper ─────────────────────────────────────────── */
-    .todo-stepper { display:flex;align-items:center;padding:14px 0;border-bottom:1px solid var(--olive);margin-bottom:4px;gap:0; }
-    .todo-step { display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;position:relative;cursor:pointer; }
-    .todo-step:not(:last-child)::after { content:'';position:absolute;top:14px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:#E2E8F0;z-index:0; }
-    .todo-step.done:not(:last-child)::after { background:#27BCB0; }
-    .todo-step-circle { width:28px;height:28px;border-radius:50%;border:2px solid #E2E8F0;background:var(--white);display:flex;align-items:center;justify-content:center;z-index:1;transition:all var(--t);font-size:11px;font-weight:700;color:#CBD5E1; }
-    .todo-step.done .todo-step-circle { background:#27BCB0;border-color:#27BCB0;color:#fff; }
-    .todo-step.active .todo-step-circle { background:var(--pine);border-color:var(--pine);color:#fff;box-shadow:0 0 0 4px rgba(11,100,92,.15); }
-    .todo-step:hover:not(.done):not(.active) .todo-step-circle { border-color:var(--teal);color:var(--teal); }
-    .todo-step-label { font-size:9px;font-weight:600;color:#94A3B8;text-align:center;line-height:1.3;text-transform:uppercase;letter-spacing:.3px;max-width:70px; }
-    .todo-step.done .todo-step-label { color:var(--teal); }
-    .todo-step.active .todo-step-label { color:var(--pine);font-weight:700; }
-    .todo-step:hover:not(.done):not(.active) .todo-step-label { color:var(--pine); }
+    /* ── Área section ──────────────────────────────────────────── */
+    .modal-area-section { padding:16px 0 14px;border-top:1px solid var(--olive); }
+    .modal-section-label { font-size:10px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px; }
 
-    .modal-pilar-bar { display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--olive);margin-bottom:18px; }
-    .modal-pilar-swatch { width:10px;height:10px;border-radius:3px;flex-shrink:0; }
-    .modal-pilar-label  { font-size:12px;font-weight:500;color:var(--elm);flex:1; }
-    .modal-pilar-select-wrap { position:relative; }
-    .modal-pilar-select { font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;color:var(--pine);background:var(--olive);border:1.5px solid #DDF0EE;border-radius:var(--radius-sm);padding:7px 32px 7px 12px;appearance:none;cursor:pointer;outline:none;min-width:190px; }
-    .modal-pilar-select:focus { border-color:var(--pine); }
-    .modal-pilar-select:disabled { opacity:.6;cursor:not-allowed; }
-    .modal-pilar-select-wrap::after { content:'';position:absolute;right:11px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--pine);pointer-events:none; }
-    .modal-pilar-spinner { width:16px;height:16px;border:2px solid var(--fresno);border-top-color:var(--pine);border-radius:50%;animation:spin .6s linear infinite;display:none;flex-shrink:0; }
-    .modal-desc-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:8px; }
-    .modal-desc-label { font-size:10px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.6px; }
-    .modal-desc-text { font-size:13px;color:var(--gray-txt);line-height:1.7;cursor:pointer;padding:10px 12px;border-radius:var(--radius-md);border:1.5px solid transparent;transition:border-color var(--t),background var(--t); }
+    .modal-desc-text { font-size:14px;color:#374151;line-height:1.75;cursor:pointer;padding:12px 14px;border-radius:var(--radius-md);border:1.5px solid transparent;margin-bottom:8px;transition:border-color 150ms ease,background 150ms ease; }
     .modal-desc-text:hover { border-color:#DDF0EE;background:#F9FFFE; }
     .modal-desc-text p { margin:0; }
     .modal-empty-desc { font-style:italic;color:#B0BEC5; }
@@ -400,12 +372,6 @@
     .k-link-badge { display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;background:#F1F5F9;color:#94A3B8;text-decoration:none;flex-shrink:0;transition:background var(--t),color var(--t); }
     .k-link-badge:hover { background:#DDF0EE;color:var(--pine); }
     .k-link-badge svg { width:11px;height:11px; }
-    .modal-link-input { font-family:'Poppins',sans-serif;font-size:12px;color:var(--elm);border:1.5px solid #DDF0EE;border-radius:var(--radius-sm);padding:6px 10px;outline:none;flex:1;min-width:0;transition:border-color var(--t);background:var(--white); }
-    .modal-link-input:focus { border-color:var(--pine); }
-    .modal-link-input::placeholder { color:#CBD5E1; }
-    .modal-link-go { display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:var(--radius-sm);background:var(--olive);color:var(--pine);text-decoration:none;flex-shrink:0;transition:background var(--t); }
-    .modal-link-go:hover { background:#DDF0EE; }
-    .modal-link-go svg { width:13px;height:13px; }
     .search-wrap { display:flex;align-items:center;gap:6px;background:#F1F5F9;border:1px solid #E2E8F0;border-radius:20px;padding:5px 12px;min-width:200px;transition:border-color var(--t),box-shadow var(--t); }
     .search-wrap:focus-within { border-color:var(--teal);box-shadow:0 0 0 3px rgba(39,188,176,.12);background:#fff; }
     .search-icon { width:14px;height:14px;color:#94A3B8;flex-shrink:0; }
@@ -427,6 +393,48 @@
     .lightbox-close { position:fixed;top:20px;right:24px;background:rgba(255,255,255,.12);border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;transition:background .15s; }
     .lightbox-close:hover { background:rgba(255,255,255,.22); }
     .lightbox-name { position:fixed;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.65);font-size:12px;font-family:'Poppins',sans-serif;white-space:nowrap;pointer-events:none; }
+
+    /* ── Review Mode ────────────────────────────────────────── */
+    .review-trigger-btn { display:flex;align-items:center;gap:6px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#fff;background:var(--pine);border:none;border-radius:var(--radius-sm);padding:7px 14px;cursor:pointer;transition:background var(--t);white-space:nowrap; }
+    .review-trigger-btn:hover { background:#0A5550; }
+    .review-trigger-btn svg { width:13px;height:13px;flex-shrink:0; }
+    .review-overlay { position:fixed;inset:0;z-index:9000;background:#001A18;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Poppins',sans-serif; }
+    .review-overlay.active { display:flex; }
+    .review-topbar { position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:22px 28px; }
+    .review-close-btn { display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.5);cursor:pointer;font-size:20px;line-height:1;transition:all 150ms ease; }
+    .review-close-btn:hover { background:rgba(255,255,255,.1);color:#fff; }
+    .review-progress-wrap { display:flex;align-items:center;gap:10px; }
+    .review-progress-label { font-size:11px;font-weight:600;color:rgba(255,255,255,.35);letter-spacing:.4px; }
+    .review-progress-bar { width:100px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden; }
+    .review-progress-fill { height:100%;background:var(--teal);border-radius:2px;transition:width 280ms ease; }
+    .review-card-wrap { width:100%;max-width:520px;padding:0 24px; }
+    .review-card { background:#fff;border-radius:20px;padding:30px 30px 26px;box-shadow:0 40px 80px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.25); }
+    .review-card.anim-enter { animation:rv-enter 250ms ease forwards; }
+    .review-card.anim-exit-left { animation:rv-exit-left 180ms ease forwards; }
+    .review-card.anim-exit-right { animation:rv-exit-right 180ms ease forwards; }
+    @keyframes rv-enter { from{opacity:0;transform:translateX(60px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes rv-exit-left { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-80px)} }
+    @keyframes rv-exit-right { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(80px)} }
+    .review-card-badges { display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px; }
+    .review-card-title { font-size:22px;font-weight:700;color:#002421;line-height:1.28;margin-bottom:22px; }
+    .review-textarea { font-family:'Poppins',sans-serif;font-size:13px;color:#374151;line-height:1.65;width:100%;min-height:88px;border:1.5px solid #DDF0EE;border-radius:10px;padding:11px 13px;outline:none;resize:none;background:#FAFFFE;transition:border-color 150ms ease;box-sizing:border-box; }
+    .review-textarea:focus { border-color:var(--pine); }
+    .review-actions { display:flex;gap:10px;margin-top:14px;justify-content:flex-end;align-items:center; }
+    .review-pass-btn { font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;color:#94A3B8;background:transparent;border:1.5px solid #E2E8F0;border-radius:8px;padding:9px 18px;cursor:pointer;transition:all 150ms ease; }
+    .review-pass-btn:hover { color:#64748B;border-color:#CBD5E1;background:#F8FAFC; }
+    .review-publish-btn { font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#fff;background:var(--pine);border:none;border-radius:8px;padding:9px 22px;cursor:pointer;transition:background 150ms ease;display:flex;align-items:center;gap:6px; }
+    .review-publish-btn:hover { background:#0A5550; }
+    .review-end { text-align:center;color:#fff;display:none;flex-direction:column;align-items:center;gap:18px; }
+    .review-end.active { display:flex; }
+    .review-end-icon { width:68px;height:68px;border-radius:50%;background:rgba(39,188,176,.12);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center; }
+    .review-end-title { font-size:26px;font-weight:700;margin:0; }
+    .review-end-sub { font-size:13px;color:rgba(255,255,255,.45);margin:0; }
+    .review-end-question { font-size:14px;color:rgba(255,255,255,.65);margin:4px 0 0; }
+    .review-end-actions { display:flex;gap:10px;margin-top:4px; }
+    .review-end-add { font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#fff;background:var(--pine);border:none;border-radius:10px;padding:11px 22px;cursor:pointer;transition:background 150ms ease; }
+    .review-end-add:hover { background:#0A5550; }
+    .review-end-done { font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 22px;cursor:pointer;transition:all 150ms ease; }
+    .review-end-done:hover { color:#fff;background:rgba(255,255,255,.12); }
   </style>
 </head>
 <body>
@@ -456,46 +464,19 @@
         </button>
       </div>
       <div class="modal-status-bar">
-        <span class="modal-dot" id="modal-dot"></span>
-        <span class="modal-status-label" id="modal-status-label"></span>
         <div class="status-group-toggle" id="status-group-toggle">
           <button class="sgt-btn" data-group="Backlog"       onclick="setGroupFromModal('Backlog')">Backlog</button>
-          <button class="sgt-btn" data-group="To-do"         onclick="setGroupFromModal('To-do')">To-do</button>
           <button class="sgt-btn" data-group="En desarrollo" onclick="setGroupFromModal('En desarrollo')">En desarrollo</button>
           <button class="sgt-btn" data-group="Completado"    onclick="setGroupFromModal('Completado')">Completado</button>
+          <button class="sgt-btn" data-group="Archivado"     onclick="setGroupFromModal('Archivado')">Archivado</button>
         </div>
-        <select class="modal-select" id="modal-select" onchange="updateStatusFromModal(this.value)" style="display:none"></select>
         <div class="modal-spinner" id="modal-spinner"></div>
       </div>
-      <div id="modal-todo-stepper" style="display:none"></div>
-      <div class="modal-pilar-bar" style="flex-direction:column;align-items:flex-start;gap:8px">
-        <div class="pilar-toggle" id="pilar-toggle"></div>
-        <select class="modal-pilar-select" id="modal-pilar-select" style="display:none"></select>
-        <div class="modal-pilar-spinner" id="modal-pilar-spinner"></div>
-      </div>
-      <div class="modal-pilar-bar" style="flex-direction:column;align-items:flex-start;gap:6px;border-bottom:1px solid var(--olive);padding-bottom:12px;margin-bottom:0">
-        <span style="font-size:10px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.5px">Área</span>
+      <div id="modal-desc"></div>
+      <div class="modal-area-section">
+        <span class="modal-section-label">Área</span>
         <div class="pilar-toggle" id="area-toggle"></div>
       </div>
-      <div class="modal-pilar-bar" id="modal-mes-bar" style="border-bottom:1px solid var(--olive);margin-bottom:14px;padding:10px 0">
-        <span class="modal-pilar-label" style="color:var(--gray-txt);font-size:11px;min-width:90px">Mes de salida</span>
-        <div class="modal-pilar-select-wrap">
-          <select class="modal-pilar-select" id="modal-mes-select" onchange="updateMesFromModal(this.value)"></select>
-        </div>
-      </div>
-      <div class="modal-pilar-bar" id="modal-link-bar" style="border-bottom:1px solid var(--olive);margin-bottom:14px;padding:10px 0;gap:8px">
-        <span class="modal-pilar-label" style="color:var(--gray-txt);font-size:11px;min-width:90px;flex-shrink:0">Link o HU</span>
-        <div style="flex:1;display:flex;align-items:center;gap:6px">
-          <input class="modal-link-input" id="modal-link-input" type="url" placeholder="https://…" oninput="updateLinkFromModal(this.value)" />
-          <a class="modal-link-go" id="modal-link-go" href="#" target="_blank" rel="noopener" title="Abrir link" style="display:none">
-            <svg viewBox="0 0 13 13" fill="none"><path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8M8 1h4m0 0v4m0-4L5.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="modal-desc-header">
-        <span class="modal-desc-label">Descripción</span>
-      </div>
-      <div id="modal-desc"></div>
       <div class="modal-attach-section" id="modal-attach-section">
         <div class="modal-attach-label">Archivos adjuntos</div>
         <div class="attach-list" id="attach-list"></div>
@@ -515,13 +496,13 @@
       <!-- Notes panel (view mode) -->
       <div id="notes-panel-content" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
         <div class="notes-panel-header">
-          <span class="notes-panel-title">Anotaciones</span>
+          <span class="notes-panel-title">Bitácora</span>
           <span class="notes-panel-count" id="notes-panel-count"></span>
         </div>
         <div class="notes-list" id="modal-notes-list"></div>
         <div class="notes-input-area">
           <div class="notes-input-wrap">
-            <textarea class="notes-textarea" id="modal-notes-textarea" placeholder="Escribe una anotación…" oninput="document.getElementById('notes-post-btn').disabled=!this.value.trim()"></textarea>
+            <textarea class="notes-textarea" id="modal-notes-textarea" placeholder="Nueva entrada en la bitácora…" oninput="document.getElementById('notes-post-btn').disabled=!this.value.trim()"></textarea>
             <button class="notes-post-btn" id="notes-post-btn" onclick="postNote()" disabled>
               <svg viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Publicar
@@ -566,6 +547,10 @@
             Timeline
           </button>
         </div>
+        <button class="review-trigger-btn" onclick="startReview()" title="Revisar proyectos uno a uno">
+          <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7l1.8 1.8L9.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Revisar
+        </button>
         <span id="autosave-indicator" style="font-size:10px;font-weight:500;color:var(--pine);opacity:0;transition:opacity .3s;margin-right:8px;white-space:nowrap"></span>
         <button class="sync-btn" id="sync-btn" onclick="generatePDFReport()" title="Descargar reporte de estatus">
           <svg viewBox="0 0 16 16" fill="none"><path d="M8 1v8M5 6l3 3 3-3" stroke="#0B645C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="11" width="12" height="3" rx="1" stroke="#0B645C" stroke-width="1.5"/></svg>
@@ -576,27 +561,22 @@
     <div class="metrics">
       <div class="metric active" id="metric-total"      onclick="setStatusFilter('Todos')">       <span class="metric-value" id="m-total">—</span>     <span class="metric-label">Total proyectos</span></div>
       <div class="metric" id="metric-backlog"    onclick="setStatusFilter('Backlog')">     <span class="metric-value" id="m-backlog">—</span>    <span class="metric-label"><span class="metric-dot" style="background:#94A3B8"></span>Backlog</span></div>
-      <div class="metric" id="metric-todo"       onclick="setStatusFilter('To-do')">       <span class="metric-value" id="m-todo">—</span>       <span class="metric-label"><span class="metric-dot" style="background:#F59E0B"></span>To-do</span></div>
       <div class="metric" id="metric-inprogress" onclick="setStatusFilter('En desarrollo')"> <span class="metric-value" id="m-inprogress">—</span> <span class="metric-label"><span class="metric-dot" style="background:#27BCB0"></span>En desarrollo</span></div>
       <div class="metric" id="metric-done"       onclick="setStatusFilter('Completado')">  <span class="metric-value" id="m-done">—</span>       <span class="metric-label"><span class="metric-dot" style="background:#16A34A"></span>Completado</span></div>
-    </div>
-    <div class="filters">
-      <span class="filter-label">Pilar</span>
-      <button class="pill active" data-pilar="Todos"             onclick="setFilter('Todos')">Todos</button>
-      <button class="pill" data-pilar="Regulatorio"              onclick="setFilter('Regulatorio')">Regulatorio</button>
-      <button class="pill" data-pilar="Inversión"                onclick="setFilter('Inversión')">Inversión</button>
-      <button class="pill" data-pilar="Transaccionalidad"        onclick="setFilter('Transaccionalidad')">Transaccionalidad</button>
-      <button class="pill" data-pilar="Educación Financiera"     onclick="setFilter('Educación Financiera')">Educación Financiera</button>
-      <button class="pill" data-pilar="Optimización & Tecnología" onclick="setFilter('Optimización & Tecnología')">Optimización & Tecnología</button>
+      <div class="metric" id="metric-archived"  onclick="setStatusFilter('Archivado')">   <span class="metric-value" id="m-archived">—</span>    <span class="metric-label"><span class="metric-dot" style="background:#78716C"></span>Archivado</span></div>
     </div>
     <div class="filters" style="justify-content:space-between">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span class="filter-label">Área</span>
-        <button class="pill active" data-area="Todos"        onclick="setAreaFilter('Todos')">Todos</button>
-        <button class="pill" data-area="Diseño"              onclick="setAreaFilter('Diseño')">🎨 Diseño</button>
+        <button class="pill active" data-area="Todos"          onclick="setAreaFilter('Todos')">Todos</button>
+        <button class="pill" data-area="TDD"                 onclick="setAreaFilter('TDD')">💳 TDD</button>
+        <button class="pill" data-area="Servicio"            onclick="setAreaFilter('Servicio')">🎧 Servicio</button>
         <button class="pill" data-area="Operaciones"         onclick="setAreaFilter('Operaciones')">⚙️ Operaciones</button>
-        <button class="pill" data-area="DATA"                onclick="setAreaFilter('DATA')">📊 DATA</button>
-        <button class="pill" data-area="Negocio"             onclick="setAreaFilter('Negocio')">💼 Negocio</button>
+        <button class="pill" data-area="Producto"            onclick="setAreaFilter('Producto')">📱 Producto</button>
+        <button class="pill" data-area="Regulatorios"        onclick="setAreaFilter('Regulatorios')">📋 Regulatorios</button>
+        <button class="pill" data-area="Data"                onclick="setAreaFilter('Data')">📊 Data</button>
+        <button class="pill" data-area="Adquisición"         onclick="setAreaFilter('Adquisición')">🎯 Adquisición</button>
+        <button class="pill" data-area="Comunicación"        onclick="setAreaFilter('Comunicación')">📣 Comunicación</button>
       </div>
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -620,38 +600,108 @@ const GH_API   = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/$
 const GH_RAW   = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_PATH}`;
 const LS_KEY   = 'dinn-roadmap-data';
 
-// ── Airtable (migración / fallback) ─────────────────────────
+// ── Airtable (configuración) ─────────────────────────────────
 const AT_BASE  = 'apppW2dYQR1fq1a8i';
 const AT_TABLE = 'tbl9dnfWuOX9AWjjE';
-const AT_KEY   = 'patbrpHglgpYtilXf.ebc1000fc2219984004c7602d4ad5015f5f78a4ca3c922458b62d354f68d816f';
 const AT_URL   = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
-const AT_HEADS = { 'Authorization': `Bearer ${AT_KEY}`, 'Content-Type': 'application/json' };
-const AT_FIELDS = { nombre:'fldPfQnkalgfOlEFd', estatus:'fldhBmfdglPCANjq3', desc:'fldMZtRGHHd8pvVYv', pilar:'fldtzMNqSb5mejE7m', prioridad:'flds5LPdTaIwjm13W', semestre:'fldE0cnERdlC392Hf', mes:'fldrzAez1ULULrWAy' };
+const AT_FIELDS = { nombre:'fldPfQnkalgfOlEFd', estatus:'fldhBmfdglPCANjq3', desc:'fldMZtRGHHd8pvVYv', prioridad:'flds5LPdTaIwjm13W', semestre:'fldE0cnERdlC392Hf', mes:'fldrzAez1ULULrWAy' };
+
+// ── Proxy seguro — todas las llamadas Airtable pasan por /api/airtable ──
+async function atFetch(url, { method = 'GET', body } = {}) {
+  const res = await fetch('/api/airtable', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ method, url, body }),
+  });
+  return res;
+}
+
+// ── Tabla Dashboard (fuente de verdad compartida) ─────────────
+const AT_DASH_TABLE  = 'tblhkJEqRZW00Jbbc';
+const AT_DASH_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_DASH_TABLE}`;
+const AT_DASH_FIELDS = {
+  nombre:   'fldH0kqMo7SLpPdsK',
+  estatus:  'fldvAQSaJuzoqfNWK',
+  area:     'fld3gOX9u7ndPdgeC',
+  bitacora: 'fld31iyeYP5IxBmrd',
+  desc:     'fld8uzIn8Gk5rQHkH',
+  semestre: 'fldZalbBLBHrmrRQo',
+  mes:      'fldXFvWNgP0n8DyRJ',
+  link:     'fld9KYXW9OfzmXRux',
+  votos:    'fldkIOo73R2ozmCJ7',
+  idApp:    'fldhFiXHVKp4ZTsT3',
+};
+
+// ── Helper: PATCH un registro en la tabla Dashboard ───────────
+async function patchAirtable(atId, fields) {
+  if (!atId) return;
+  try {
+    await atFetch(`${AT_DASH_URL}/${atId}`, { method: 'PATCH', body: { fields } });
+  } catch(e) { console.warn('[AT PATCH]', e); }
+}
+
+// ── Helper: Crear registro en Dashboard → devuelve atId ───────
+async function createInAirtable(proj) {
+  try {
+    const res = await atFetch(AT_DASH_URL, {
+      method: 'POST',
+      body: { fields: {
+        [AT_DASH_FIELDS.nombre]:   proj.nombre,
+        [AT_DASH_FIELDS.estatus]:  proj.estatus,
+        [AT_DASH_FIELDS.area]:     proj.area || [],
+        [AT_DASH_FIELDS.semestre]: proj.semestre || 'Backlog',
+        [AT_DASH_FIELDS.mes]:      proj.mes || 'Backlog',
+        [AT_DASH_FIELDS.idApp]:    proj.id,
+      }},
+    });
+    const data = await res.json();
+    return data.id;
+  } catch(e) { console.warn('[AT CREATE]', e); return null; }
+}
+
+// ── Helper: Eliminar registro en Dashboard ────────────────────
+async function deleteFromAirtable(atId) {
+  if (!atId) return;
+  try {
+    await atFetch(`${AT_DASH_URL}/${atId}`, { method: 'DELETE' });
+  } catch(e) { console.warn('[AT DELETE]', e); }
+}
 
 async function importFromAirtable() {
   const params = new URLSearchParams();
-  params.set('returnFieldsByFieldId','true');
-  Object.values(AT_FIELDS).forEach(id => params.append('fields[]', id));
+  params.set('returnFieldsByFieldId', 'true');
+  Object.values(AT_DASH_FIELDS).forEach(id => params.append('fields[]', id));
   let records = [], offset = null;
   do {
-    const res = await fetch(AT_URL + '?' + params + (offset ? '&offset=' + offset : ''), { headers: AT_HEADS });
+    const res = await atFetch(AT_DASH_URL + '?' + params + (offset ? '&offset=' + offset : ''));
     if (!res.ok) throw new Error(`Airtable ${res.status}`);
     const data = await res.json();
     records = records.concat(data.records || []);
     offset = data.offset || null;
   } while (offset);
-  return records.map(r => ({
-    id:        r.id,
-    nombre:    r.fields[AT_FIELDS.nombre]   || '(sin nombre)',
-    estatus:   r.fields[AT_FIELDS.estatus]  || 'Nueva Captura',
-    desc:      r.fields[AT_FIELDS.desc]     || '',
-    pilar:     r.fields[AT_FIELDS.pilar] ? [r.fields[AT_FIELDS.pilar]] : [],
-    prioridad: r.fields[AT_FIELDS.prioridad]|| '',
-    semestre:  r.fields[AT_FIELDS.semestre] || 'Backlog',
-    mes:       r.fields[AT_FIELDS.mes]      || 'Backlog',
-    votes:     0,
-    area:      'Diseño',
-  }));
+  return records.map(r => {
+    const f = r.fields;
+    const idApp = f[AT_DASH_FIELDS.idApp] || r.id;
+    // Sincronizar bitácora al localStorage
+    const bitacora = f[AT_DASH_FIELDS.bitacora] || '';
+    if (bitacora) {
+      try { localStorage.setItem('dinn-notes-' + idApp, bitacora); } catch(e) {}
+    }
+    return {
+      id:        idApp,
+      _atId:     r.id,
+      nombre:    f[AT_DASH_FIELDS.nombre]   || '(sin nombre)',
+      estatus:   f[AT_DASH_FIELDS.estatus]  || 'En desarrollo',
+      desc:      f[AT_DASH_FIELDS.desc]     || '',
+      area:      Array.isArray(f[AT_DASH_FIELDS.area]) ? f[AT_DASH_FIELDS.area] : [],
+      semestre:  f[AT_DASH_FIELDS.semestre] || 'Backlog',
+      mes:       f[AT_DASH_FIELDS.mes]      || 'Backlog',
+      link:      f[AT_DASH_FIELDS.link]     || '',
+      votes:     typeof f[AT_DASH_FIELDS.votos] === 'number' ? f[AT_DASH_FIELDS.votos] : 0,
+      prioridad: '',
+      pilar:     [],
+    };
+  });
 }
 
 function genId() { return Date.now().toString(36)+Math.random().toString(36).substr(2,5); }
@@ -705,111 +755,31 @@ const STATUS_OPTIONS = Object.keys(STATUS_COLORS);
 
 // ── Grupos de estatus ──────────────────────────────────────────
 const STATUS_GROUPS = {
-  'Backlog':     { statuses:['Nueva Captura'],                                                                     color:'#94A3B8', bg:'#F1F5F9', text:'#475569' },
-  'To-do':       { statuses:['Definición del problema','Validación','Diseño','Lista para sprint','Bloqueado'],     color:'#F59E0B', bg:'#FEF3C7', text:'#92400E' },
-  'En desarrollo': { statuses:['En desarrollo'],                                                                     color:'#27BCB0', bg:'#D1FAE5', text:'#065F46' },
-  'Completado':  { statuses:['Lanzado'],                                                                           color:'#16A34A', bg:'#D1FAE5', text:'#065F46' },
+  'Backlog':       { statuses:['Nueva Captura','Definición del problema','Validación','Diseño','Lista para sprint','Bloqueado'], color:'#94A3B8', bg:'#F1F5F9', text:'#475569' },
+  'En desarrollo': { statuses:['En desarrollo'],                                                                                 color:'#27BCB0', bg:'#D1FAE5', text:'#065F46' },
+  'Completado':    { statuses:['Lanzado'],                                                                                       color:'#16A34A', bg:'#D1FAE5', text:'#065F46' },
+  'Archivado':     { statuses:['Archivado'],                                                                                     color:'#78716C', bg:'#F5F5F4', text:'#57534E' },
 };
-const STATUS_GROUP_ORDER = ['Backlog','To-do','En desarrollo','Completado'];
+const STATUS_GROUP_ORDER = ['Backlog','En desarrollo','Completado','Archivado'];
 
 // ── Proyectos inyectados desde código ────────────────────────
 // Para agregar un proyecto: añadir un objeto aquí con id único tipo 'patch-NNN-slug'
-const DATA_PATCHES = [
-  {
-    id: 'patch-001-pago-servicios-cambio-proveedor',
-    nombre: 'Pago de servicios - Cambio de proveedor',
-    estatus: 'Definición del problema',
-    desc: 'Cambio de proveedor para el módulo de pago de servicios.',
-    pilar: ['Transaccionalidad'],
-    prioridad: '',
-    semestre: 'H1 2026',
-    mes: 'Mayo 2026',
-    votes: 0,
-    area: 'Diseño',
-  },
-  {
-    id: 'patch-002-ejemplo-operaciones',
-    nombre: 'EJEMPLO OPERACIONES',
-    estatus: 'Nueva Captura',
-    desc: 'Card de ejemplo para el área de Operaciones.',
-    pilar: [],
-    prioridad: '',
-    semestre: 'H1 2026',
-    mes: 'Mayo 2026',
-    votes: 0,
-    area: 'Operaciones',
-  },
-  {
-    id: 'patch-003-ejemplo-data',
-    nombre: 'EJEMPLO DATA',
-    estatus: 'Nueva Captura',
-    desc: 'Card de ejemplo para el área de Data.',
-    pilar: [],
-    prioridad: '',
-    semestre: 'H1 2026',
-    mes: 'Mayo 2026',
-    votes: 0,
-    area: 'DATA',
-  },
-  {
-    id: 'patch-004-ejemplo-negocio',
-    nombre: 'EJEMPLO NEGOCIO',
-    estatus: 'Nueva Captura',
-    desc: 'Card de ejemplo para el área de Negocio.',
-    pilar: [],
-    prioridad: '',
-    semestre: 'H1 2026',
-    mes: 'Mayo 2026',
-    votes: 0,
-    area: ['Negocio'],
-  },
-  {
-    id: 'patch-005-seguimiento-brechas',
-    nombre: 'Seguimiento Plan de trabajo Brechas',
-    estatus: 'Definición del problema',
-    desc: 'Responsable: Diana Rodríguez\n\nTareas:\n• Actualización de material con información del cambio de modelo no asesorado\n• Incorporación a onboarding de nuevos ingresos de cajeros, anfitriones y subgerentes',
-    pilar: [],
-    prioridad: '',
-    semestre: 'H2 2026',
-    mes: 'Agosto 2026',
-    votes: 0,
-    area: ['Operaciones'],
-    link: null,
-  },
-  {
-    id: 'patch-006-whatsapp-dinn',
-    nombre: 'WhatsApp DINN',
-    estatus: 'Definición del problema',
-    desc: 'Responsable: Gabriela Tejadilla / Diana Rodríguez\n\nRevisión de HU Mauro Juarez 28_04',
-    pilar: [],
-    prioridad: '',
-    semestre: 'H1 2026',
-    mes: 'Abril 2026',
-    votes: 0,
-    area: ['Operaciones'],
-    link: null,
-  },
-];
+const DATA_PATCHES = [];
 function getStatusGroup(estatus) {
   for (const [g,cfg] of Object.entries(STATUS_GROUPS)) if (cfg.statuses.includes(estatus)) return g;
   return 'Backlog';
 }
 
 const AREA_COLORS = {
-  'Diseño':      { bg:'#EDE9FE', text:'#5B21B6', emoji:'🎨' },
-  'Operaciones': { bg:'#FEF3C7', text:'#92400E', emoji:'⚙️' },
-  'DATA':        { bg:'#DBEAFE', text:'#1E40AF', emoji:'📊' },
-  'Negocio':     { bg:'#D1FAE5', text:'#065F46', emoji:'💼' },
+  'TDD':          { bg:'#DBEAFE', text:'#1E40AF', emoji:'💳' },
+  'Servicio':     { bg:'#FEF3C7', text:'#92400E', emoji:'🎧' },
+  'Operaciones':  { bg:'#E0F2FE', text:'#0369A1', emoji:'⚙️' },
+  'Producto':     { bg:'#D1FAE5', text:'#065F46', emoji:'📱' },
+  'Regulatorios': { bg:'#FEE2E2', text:'#991B1B', emoji:'📋' },
+  'Data':         { bg:'#EDE9FE', text:'#5B21B6', emoji:'📊' },
+  'Adquisición':  { bg:'#FCE7F3', text:'#9D174D', emoji:'🎯' },
+  'Comunicación': { bg:'#FEF9C3', text:'#854D0E', emoji:'📣' },
 };
-
-const PILAR_COLORS = {
-  'Regulatorio':              { bg:'#FEF3C7', text:'#92400E' },
-  'Inversión':                { bg:'#D1FAE5', text:'#065F46' },
-  'Transaccionalidad':        { bg:'#DBEAFE', text:'#1E40AF' },
-  'Educación Financiera':     { bg:'#EDE9FE', text:'#5B21B6' },
-  'Optimización & Tecnología':{ bg:'#FEF9C3', text:'#854D0E' },
-};
-const PILARES_ORDER = Object.keys(PILAR_COLORS);
 
 const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                      'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -829,13 +799,12 @@ const CURRENT_MONTH = `${MONTH_NAMES[now.getMonth()]} ${now.getFullYear()}`;
 
 // ── Estado ──────────────────────────────────────────────────
 let allProjects        = [];
-let activeFilter       = 'Todos';
 let activeAreaFilter   = 'Todos';
 let activeStatusFilter = 'Todos';
 let searchQuery        = '';
 let currentView        = 'cards';
 let modalMode          = 'view';   // 'view' | 'create'
-let createContext      = { mes: null, pilar: '' };
+let createContext      = { mes: null };
 let modalId      = null;
 let dragSrc      = null;
 
@@ -881,9 +850,9 @@ function getSemestreFromBucket(bucket) {
 function updateMetrics(projects) {
   document.getElementById('m-total').textContent      = projects.length;
   document.getElementById('m-backlog').textContent    = projects.filter(p=>STATUS_GROUPS['Backlog'].statuses.includes(p.estatus)).length;
-  document.getElementById('m-todo').textContent       = projects.filter(p=>STATUS_GROUPS['To-do'].statuses.includes(p.estatus)).length;
   document.getElementById('m-inprogress').textContent = projects.filter(p=>STATUS_GROUPS['En desarrollo'].statuses.includes(p.estatus)).length;
   document.getElementById('m-done').textContent       = projects.filter(p=>STATUS_GROUPS['Completado'].statuses.includes(p.estatus)).length;
+  document.getElementById('m-archived').textContent   = projects.filter(p=>STATUS_GROUPS['Archivado'].statuses.includes(p.estatus)).length;
 }
 
 // ── Carga de datos ───────────────────────────────────────────
@@ -892,45 +861,28 @@ async function loadProjects() {
   const btn = document.getElementById('sync-btn');
   if (btn) btn.classList.add('spinning');
   try {
-    // 1. Intentar GitHub raw
-    const res = await fetch(GH_RAW + '?t=' + Date.now());
-    if (res.ok) {
-      allProjects = await res.json();
-      saveLocal();
-    } else throw new Error('no gh');
-  } catch {
-    // 2. Fallback: localStorage
-    const stored = localStorage.getItem(LS_KEY);
-    if (stored) {
-      allProjects = JSON.parse(stored);
-    } else {
-      // 3. Migración desde Airtable (primera vez)
-      try {
-        allProjects = await importFromAirtable();
-        saveLocal();
-        showToast('✓ Datos importados desde Airtable', 'success');
-      } catch(e) {
-        allProjects = [];
-        showToast('No se pudieron cargar los proyectos', 'error');
+    // 1. FUENTE DE VERDAD: Airtable Dashboard (compartido entre todos los usuarios)
+    try {
+      allProjects = await importFromAirtable();
+      saveLocal(); // guardar en caché local
+    } catch(atErr) {
+      console.warn('[loadProjects] Airtable no disponible, usando caché local:', atErr);
+      // 2. Fallback: localStorage (cuando no hay conexión)
+      const stored = localStorage.getItem(LS_KEY);
+      if (stored) {
+        try { allProjects = JSON.parse(stored); }
+        catch { allProjects = []; }
+      }
+      if (allProjects.length === 0) {
+        showToast('Sin conexión — los datos pueden no estar actualizados', 'error');
       }
     }
+  } catch(e) {
+    allProjects = [];
   }
   // Normalizar datos: garantizar tipos correctos en todos los campos
   let dataNeedsResave = false;
   allProjects = allProjects.map(p => {
-    // Flatten pilar: Airtable devuelve array, pero importFromAirtable lo envolvía en otro array
-    let pilar = p.pilar;
-    if (!Array.isArray(pilar)) {
-      pilar = pilar ? [pilar] : [];
-      dataNeedsResave = true;
-    } else {
-      // Aplanar si algún elemento es array (bug de anidación)
-      const flat = pilar.flatMap(x => Array.isArray(x) ? x : [x]).filter(x => x && typeof x === 'string');
-      if (flat.length !== pilar.length || flat.some((v,i) => v !== pilar[i])) {
-        pilar = flat;
-        dataNeedsResave = true;
-      }
-    }
     // Normalize area: always array
     let area = p.area;
     if (!Array.isArray(area)) { area = area ? [area] : []; dataNeedsResave = true; }
@@ -939,7 +891,6 @@ async function loadProjects() {
       nombre:    (p.nombre && p.nombre !== 'undefined')   ? String(p.nombre)    : '(sin nombre)',
       estatus:   p.estatus   ? String(p.estatus)   : 'Nueva Captura',
       desc:      p.desc      ? String(p.desc)      : '',
-      pilar,
       area,
       prioridad: p.prioridad ? String(p.prioridad) : '',
       semestre:  p.semestre  ? String(p.semestre)  : 'Backlog',
@@ -975,12 +926,6 @@ async function loadProjects() {
 }
 
 // ── Filtros & vista ──────────────────────────────────────────
-function setFilter(pilar) {
-  activeFilter = pilar;
-  document.querySelectorAll('.pill[data-pilar]').forEach(b => b.classList.toggle('active', b.dataset.pilar===pilar));
-  renderProjects();
-}
-
 function setAreaFilter(area) {
   activeAreaFilter = area;
   document.querySelectorAll('.pill[data-area]').forEach(b => b.classList.toggle('active', b.dataset.area===area));
@@ -992,9 +937,9 @@ function setStatusFilter(status) {
   document.querySelectorAll('.pill[data-status]').forEach(b => b.classList.toggle('active', b.dataset.status===status));
   document.getElementById('metric-total').classList.toggle('active',      status==='Todos');
   document.getElementById('metric-backlog').classList.toggle('active',    status==='Backlog');
-  document.getElementById('metric-todo').classList.toggle('active',       status==='To-do');
   document.getElementById('metric-inprogress').classList.toggle('active', status==='En desarrollo');
   document.getElementById('metric-done').classList.toggle('active',       status==='Completado');
+  document.getElementById('metric-archived').classList.toggle('active',   status==='Archivado');
   renderProjects();
 }
 
@@ -1014,7 +959,7 @@ function clearSearch() {
 }
 
 function filteredProjects() {
-  let list = activeFilter==='Todos' ? allProjects : allProjects.filter(p=>p.pilar.includes(activeFilter));
+  let list = allProjects;
   if (activeAreaFilter !== 'Todos') list = list.filter(p => { const a = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []); return a.includes(activeAreaFilter); });
   if (searchQuery) list = list.filter(p => (p.nombre||'').toLowerCase().includes(searchQuery) || (p.desc||'').toLowerCase().includes(searchQuery));
   if (activeStatusFilter === 'Todos') return list;
@@ -1057,7 +1002,7 @@ function renderKanban() {
     const cards = byGroup[group];
     const defaultSt = cfg.statuses[0];
     html += `
-      <div class="kanban-col">
+      <div class="kanban-col${group === 'Archivado' ? ' archived-col' : ''}">
         <div class="kanban-head" style="border-top:3px solid ${cfg.color}">
           <span class="kanban-month" style="color:${cfg.text}">${group}</span>
           <span class="kanban-cnt" id="cnt-sg-${slugify(group)}" style="background:${cfg.bg};color:${cfg.text}">${cards.length}</span>
@@ -1065,7 +1010,7 @@ function renderKanban() {
         <div class="kanban-scroll-area">
           ${group === 'Backlog' ? `<button class="add-card-btn add-card-btn-top" onclick="openNewProjectModal(null,'','${defaultSt}')"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Agregar proyecto</button>` : ''}
           <div class="kanban-body" data-group="${group}" id="sgbody-${slugify(group)}">
-            ${group === 'Completado' ? renderCompletadoCards(cards) : group === 'To-do' ? renderCardsByMonth(cards, false) : cards.map(p=>renderKCard(p)).join('')}
+            ${group === 'Completado' ? renderCompletadoCards(cards) : cards.map(p=>renderKCard(p)).join('')}
           </div>
         </div>
       </div>`;
@@ -1100,6 +1045,7 @@ function voteProject(id) {
   if (!proj) return;
   proj.votes = Math.min((proj.votes || 0) + 1, 999);
   saveLocal();
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.votos]: proj.votes });
   // Re-render backlog column in place
   const body = document.getElementById('sgbody-Backlog');
   if (body) {
@@ -1114,12 +1060,6 @@ function voteProject(id) {
 
 function renderKCard(p) {
   const gc = STATUS_GROUPS[getStatusGroup(p.estatus)] || STATUS_GROUPS['Backlog'];
-  const pilarArr = Array.isArray(p.pilar) ? p.pilar : (p.pilar ? [p.pilar] : []);
-  const pilarBadges = pilarArr.map(pi => {
-    const c = PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'};
-    return `<span class="badge" data-pilar="${pi}" style="background:${c.bg};color:${c.text};font-size:9px;padding:2px 7px">${pi}</span>`;
-  }).join('');
-  const statusBadge = `<span class="k-status-badge" style="background:${gc.bg};color:${gc.text}">${p.estatus}</span>`;
   const areaArr = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
   const areaBadge = areaArr.map(a => { const info = AREA_COLORS[a]; return info ? `<span class="badge" title="${a}" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 7px">${info.emoji} ${a}</span>` : ''; }).join('');
   const linkBadge = p.link ? `<a class="k-link-badge" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="${escapeHtml(p.link)}" onclick="event.stopPropagation()"><svg viewBox="0 0 13 13" fill="none"><path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8M8 1h4m0 0v4m0-4L5.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : '';
@@ -1132,7 +1072,6 @@ function renderKCard(p) {
       <div class="k-card-body">
         <div class="k-card-title" id="ktitle-${p.id}">${escapeHtml(p.nombre)}</div>
         <div class="k-card-meta" style="display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:nowrap;margin-top:6px">
-          <div style="display:flex;gap:4px;flex-wrap:wrap">${pilarBadges}</div>
           <div style="display:flex;gap:4px;align-items:center;flex-shrink:0">${linkBadge}${areaBadge}</div>
         </div>
       </div>
@@ -1275,7 +1214,7 @@ function setupStatusDnD() {
       if (!srcCard) return;
       const body = card.closest('.kanban-body');
       if (!body || srcCard.closest('.kanban-body') !== body) return;
-      if (body.dataset.group === 'Completado') return; // locked
+      if (body.dataset.group === 'Completado' || body.dataset.group === 'Archivado') return; // locked
       e.preventDefault();
       e.stopPropagation();
       clearDropIndicators();
@@ -1283,22 +1222,6 @@ function setupStatusDnD() {
       const mid = card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2;
       if (e.clientY < mid) body.insertBefore(srcCard, card);
       else body.insertBefore(srcCard, card.nextSibling);
-      // For To-do: update proj.mes to match the month zone the card landed in
-      if (body.dataset.group === 'To-do') {
-        const proj = allProjects.find(p => p.id === id);
-        if (proj) {
-          let prev = srcCard.previousElementSibling;
-          while (prev && !prev.classList.contains('completado-month-divider')) prev = prev.previousElementSibling;
-          if (prev?.dataset.mes) {
-            const newMes = prev.dataset.mes;
-            if (proj.mes !== newMes) {
-              proj.mes = newMes === 'H2 sin mes' ? 'Backlog' : newMes;
-              proj.semestre = H1_MONTHS.has(newMes) ? 'H1 2026' : 'H2 2026';
-              saveLocal();
-            }
-          }
-        }
-      }
       persistColumnOrder(body);
       refreshKanbanCounts();
     });
@@ -1323,9 +1246,10 @@ function setupStatusDnD() {
 
       // Actualizar local + badge
       proj.estatus = newEstatus;
+      patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: newEstatus });
 
-      // Completado re-renders fully to place card in correct month section
-      if (newGroup === 'Completado' || prevGroup === 'Completado') {
+      // Completado y Archivado re-render fully
+      if (newGroup === 'Completado' || prevGroup === 'Completado' || newGroup === 'Archivado' || prevGroup === 'Archivado') {
         saveLocal();
         updateMetrics(allProjects);
         renderKanban();
@@ -1366,6 +1290,7 @@ function setupStatusDnD() {
 // ── Mover mes (local) ─────────────────────────────────────────
 function patchMes(recordId, newBucket, prevBucket, proj) {
   saveLocal();
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.mes]: newBucket });
   showToast(`✓ Movido a ${newBucket==='H2 sin mes'?'Segundo Semestre':newBucket}`,'success');
 }
 
@@ -1421,6 +1346,7 @@ function saveTitleModal() {
   const bar = document.querySelector(`.tl-bar[data-id="${modalId}"] .tl-bar-name`);
   if (bar) bar.textContent = newName;
   saveLocal();
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.nombre]: newName });
   showToast('✓ Nombre guardado','success');
 }
 
@@ -1447,12 +1373,14 @@ function cancelDelete() {
 function confirmDelete() {
   if (!modalId) return;
   const idToDelete = modalId;
+  const deletedProj = allProjects.find(p => p.id === idToDelete);
   allProjects = allProjects.filter(p=>p.id!==idToDelete);
   document.getElementById(`kcard-${idToDelete}`)?.remove();
   document.querySelector(`.tl-bar[data-id="${idToDelete}"]`)?.remove();
   updateMetrics(allProjects);
   refreshKanbanCounts();
   saveLocal();
+  if (deletedProj?._atId) deleteFromAirtable(deletedProj._atId);
   closeModal();
   showToast('Proyecto eliminado','success');
 }
@@ -1502,8 +1430,6 @@ function openSimilarPreview(projId) {
   preview.classList.add('open');
   // Build content
   const gc = STATUS_GROUPS[getStatusGroup(proj.estatus)] || STATUS_GROUPS['Backlog'];
-  const pilarArr = Array.isArray(proj.pilar) ? proj.pilar : (proj.pilar ? [proj.pilar] : []);
-  const pilarBadges = pilarArr.map(pi => { const c = PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'}; return `<span class="badge" style="background:${c.bg};color:${c.text}">${pi}</span>`; }).join('');
   const areaArr = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
   const areaBadges = areaArr.map(a => { const ac = AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
   const notes = getNotes(projId);
@@ -1511,7 +1437,7 @@ function openSimilarPreview(projId) {
   document.getElementById('similar-preview-body').innerHTML = `
     <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
       <span style="background:${gc.bg};color:${gc.text};font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px">${proj.estatus}</span>
-      ${pilarBadges}${areaBadges}
+      ${areaBadges}
     </div>
     <div style="font-size:16px;font-weight:600;color:var(--elm);line-height:1.4">${escapeHtml(proj.nombre)}</div>
     ${proj.mes && proj.mes !== 'Backlog' ? `<div style="font-size:11px;color:var(--gray-txt)">📅 ${proj.mes}</div>` : ''}
@@ -1526,10 +1452,10 @@ function closeSimilarPreview() {
   document.getElementById('similar-preview-panel').classList.remove('open');
 }
 
-function openNewProjectModal(mes, pilar = 'Optimización & Tecnología', defaultStatus = 'Definición del problema') {
+function openNewProjectModal(mes, defaultStatus = 'Definición del problema') {
   modalMode = 'create';
   modalId   = null;
-  createContext = { mes, pilar };
+  createContext = { mes };
   document.getElementById('modal-card').classList.add('create-mode');
 
   // Título → input
@@ -1549,46 +1475,10 @@ function openNewProjectModal(mes, pilar = 'Optimización & Tecnología', default
     `<span class="badge" style="background:var(--olive);color:var(--pine)">${mesLabel}</span>`;
 
   // Estatus → pre-llenado según contexto
-  document.getElementById('modal-dot').style.background = STATUS_COLORS[defaultStatus]||'#94A3B8';
-  document.getElementById('modal-status-label').textContent = defaultStatus;
-  document.getElementById('modal-select').innerHTML =
-    STATUS_OPTIONS.map(s => `<option value="${s}" ${s===defaultStatus?'selected':''}>${s}</option>`).join('');
   syncGroupToggle(defaultStatus);
-  renderTodoStepper({ estatus: defaultStatus });
-  document.getElementById('modal-link-input').value = '';
-  document.getElementById('modal-link-go').style.display = 'none';
   _selectedAreas = [];
   renderAreaToggle([]);
 
-  // Pilar toggle → pre-llenado si viene del timeline
-  renderPilarToggle(pilar);
-  document.getElementById('modal-pilar-select').innerHTML =
-    `<option value="">Sin pilar</option>` +
-    PILARES_ORDER.map(pi => `<option value="${pi}" ${pi===pilar?'selected':''}>${pi}</option>`).join('');
-
-  // Mes de salida → pre-llenado según contexto
-  const mesOpts = ['Sin mes', ...MONTH_NAMES.map(m => m+' 2026')];
-  const mesCurrent = (mes && mes !== 'Backlog' && mes !== 'H2 sin mes') ? mes : '';
-  document.getElementById('modal-mes-select').innerHTML =
-    mesOpts.map(m => {
-      const val = m === 'Sin mes' ? '' : m;
-      return `<option value="${val}" ${val===mesCurrent?'selected':''}>${m}</option>`;
-    }).join('');
-  document.getElementById('modal-mes-bar').style.display = '';
-
-  // Panel de proyectos similares (solo backlog)
-  const todoStepper = document.getElementById('modal-todo-stepper');
-  if (todoStepper) {
-    if (!document.getElementById('similar-panel')) {
-      const sp = document.createElement('div');
-      sp.id = 'similar-panel';
-      sp.className = 'k-similar-panel';
-      sp.style.display = 'none';
-      todoStepper.parentNode.insertBefore(sp, todoStepper);
-    } else {
-      document.getElementById('similar-panel').style.display = 'none';
-    }
-  }
 
   // Descripción → textarea abierta (opcional)
   document.getElementById('modal-desc').innerHTML =
@@ -1620,31 +1510,29 @@ function createProject() {
     return;
   }
 
-  const estatus  = document.getElementById('modal-select').value || 'Nueva Captura';
-  const pilar    = document.getElementById('modal-pilar-select').value || null;
+  const activeGroup = document.querySelector('.sgt-btn.active')?.dataset.group || 'Backlog';
+  const estatus  = STATUS_GROUPS[activeGroup]?.statuses[0] || 'Nueva Captura';
   const desc     = document.getElementById('modal-new-desc')?.value.trim() || null;
-  const mesVal   = document.getElementById('modal-mes-select')?.value || '';
-  const mes      = mesVal || createContext.mes || null;
-  const link     = document.getElementById('modal-link-input')?.value.trim() || null;
 
   const btn = document.getElementById('modal-create-btn');
   btn.disabled = true; btn.textContent = 'Creando…';
 
-  const sem = getSemestreFromBucket(mes || 'Backlog');
   const newProj = {
     id:        genId(),
     nombre:    name,
     estatus,
     desc:      desc || '',
-    pilar:     pilar ? [pilar] : [],
     area:      _selectedAreas.length ? [..._selectedAreas] : [],
     prioridad: '',
-    semestre:  sem,
-    mes:       (mes && mes !== 'H2 sin mes' && mes !== 'Backlog') ? mes : 'Backlog',
-    link:      link || null,
+    semestre:  'Backlog',
+    mes:       'Backlog',
   };
   allProjects.push(newProj);
   saveLocal();
+  // Crear en Airtable y guardar el _atId
+  createInAirtable(newProj).then(atId => {
+    if (atId) { newProj._atId = atId; saveLocal(); }
+  });
   // Transferir adjuntos temporales al ID real
   const attachSection = document.getElementById('modal-attach-section');
   const tempId = attachSection?.dataset.tempId;
@@ -1711,7 +1599,7 @@ function submitNewCard(mes) {
 
   try {
     const newMes = (mes!=='H2 sin mes' && mes!=='Backlog') ? mes : 'Backlog';
-    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', pilar:[], prioridad:'', semestre:sem, mes:newMes };
+    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', area:[], prioridad:'', semestre:sem, mes:newMes };
     allProjects.push(newProj);
     saveLocal();
     updateMetrics(allProjects);
@@ -1757,32 +1645,41 @@ function renderTimeline() {
   const projects = filteredProjects();
   if (!projects.length) { main.innerHTML='<div class="state-box"><span>No hay proyectos con estos filtros.</span></div>'; return; }
 
-  const pilaresToShow = activeFilter==='Todos' ? PILARES_ORDER : [activeFilter];
+  // Group by area × bucket
+  const areasInUse = Object.keys(AREA_COLORS).filter(a =>
+    projects.some(p => (Array.isArray(p.area) ? p.area : (p.area ? [p.area] : [])).includes(a))
+  );
+  // Also include projects with no area under a special "Sin área" row
+  const hasNoArea = projects.some(p => { const a = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []); return a.length === 0; });
+  const rows = [...areasInUse, ...(hasNoArea ? ['(Sin área)'] : [])];
 
-  // Group by pilar × bucket
+  // Build data[area][bucket]
   const data = {};
-  for (const pi of pilaresToShow) { data[pi]={}; MONTHS.forEach(m=>data[pi][m]=[]); }
+  for (const a of rows) { data[a] = {}; MONTHS.forEach(m => data[a][m] = []); }
   for (const p of projects) {
     const bucket = getDisplayBucket(p);
-    const pPilar = Array.isArray(p.pilar) ? p.pilar : (p.pilar ? [p.pilar] : []);
-    for (const pi of pPilar.filter(x=>pilaresToShow.includes(x))) {
-      if (!data[pi]) continue;
-      (data[pi][bucket]=data[pi][bucket]||[]).push(p);
+    const pAreas = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
+    if (pAreas.length === 0) {
+      data['(Sin área)'][bucket].push(p);
+    } else {
+      for (const a of pAreas) {
+        if (data[a]) data[a][bucket].push(p);
+      }
     }
   }
 
   // Helper to get cell classes
-  function cellClass(m, extra='') {
-    let c = extra;
-    if (m===CURRENT_MONTH) c+=' is-today';
-    if (m==='H2 sin mes')  c+=' h2b';
+  function cellClass(m) {
+    let c = '';
+    if (m === CURRENT_MONTH) c += ' is-today';
+    if (m === 'H2 sin mes')  c += ' h2b';
     return c.trim();
   }
 
   // Semester group header
   const semRow = `
     <div class="tl-row tl-sem-row">
-      <div class="tl-pilar-sem"></div>
+      <div style="width:140px;flex-shrink:0;border-right:1px solid #DDF0EE;position:sticky;left:0;z-index:6;background:#FAFEFE"></div>
       <div class="tl-sem-cell h1-group">H1 2026</div>
       <div class="tl-sem-cell h2b-group">2do Sem.</div>
       <div class="tl-sem-cell h2-group">H2 2026</div>
@@ -1791,9 +1688,9 @@ function renderTimeline() {
 
   // Month header
   const monthCells = MONTHS.map(m => {
-    const isToday = m===CURRENT_MONTH;
-    const isH2B   = m==='H2 sin mes';
-    const isBL    = m==='Backlog';
+    const isToday = m === CURRENT_MONTH;
+    const isH2B   = m === 'H2 sin mes';
+    const isBL    = m === 'Backlog';
     const label   = isH2B ? '2do Sem' : isBL ? 'Backlog' : m.slice(0,3).toUpperCase();
     return `<div class="tl-m-head${isToday?' is-today':''}${isH2B?' h2b':''}" data-col="${m}">
       <span>${label}</span>
@@ -1803,35 +1700,36 @@ function renderTimeline() {
 
   const headRow = `
     <div class="tl-row tl-head-row">
-      <div class="tl-pilar-label" style="background:#F7FBFB">
-        <span class="tl-pilar-name" style="color:var(--gray-txt);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Pilar</span>
+      <div style="width:140px;flex-shrink:0;padding:8px 12px;border-right:1px solid #DDF0EE;position:sticky;left:0;z-index:6;background:#F7FBFB;display:flex;align-items:center">
+        <span style="color:var(--gray-txt);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Área</span>
       </div>
       ${monthCells}
     </div>`;
 
-  // Pilar rows
-  const pilarRows = pilaresToShow.map(pi => {
-    const d = data[pi];
-    const total = MONTHS.reduce((s,m)=>s+(d[m]?.length||0),0);
+  // Area rows
+  const areaRows = rows.map(a => {
+    const d = data[a];
+    const total = MONTHS.reduce((s, m) => s + (d[m]?.length || 0), 0);
     if (!total) return '';
-    const c = PILAR_COLORS[pi]||{text:'#475569'};
+    const ac = AREA_COLORS[a] || { text:'#475569', bg:'#F1F5F9', emoji:'' };
     const cells = MONTHS.map(m => {
-      const bars = (d[m]||[]).map(p=>`
+      const bars = (d[m] || []).map(p => `
         <div class="tl-bar" draggable="true" data-id="${p.id}" data-mes="${m}" style="background:${STATUS_GROUPS[getStatusGroup(p.estatus)].color}">
           <span class="tl-bar-dot"></span>
           <span class="tl-bar-name">${escapeHtml(p.nombre)}</span>
-          <span class="tl-bar-extra">${escapeHtml(p.estatus)}${p.pilar[0]?' · '+escapeHtml(p.pilar[0]):''}</span>
+          <span class="tl-bar-extra">${escapeHtml(p.estatus)}</span>
         </div>`).join('');
-      return `<div class="tl-data-cell ${cellClass(m)}" data-mes="${m}" data-pilar="${pi}">
+      return `<div class="tl-data-cell ${cellClass(m)}" data-mes="${m}" data-area="${a}">
         ${bars}
-        <button class="tl-add-cell-btn" title="Agregar proyecto" onclick="openNewProjectModal('${m}','${pi}')">+</button>
+        <button class="tl-add-cell-btn" title="Agregar proyecto" onclick="openNewProjectModal('${m}')">+</button>
       </div>`;
     }).join('');
+    const rowLabel = a === '(Sin área)' ? a : `${ac.emoji} ${a}`;
     return `
       <div class="tl-row tl-data-row">
-        <div class="tl-pilar-label">
-          <span class="tl-pilar-name" style="color:${c.text}">${pi}</span>
-          <span class="tl-pilar-count">${total}</span>
+        <div style="width:140px;flex-shrink:0;padding:8px 12px;border-right:1px solid #DDF0EE;position:sticky;left:0;z-index:6;display:flex;flex-direction:column;justify-content:center;gap:4px">
+          <span style="font-size:11px;font-weight:600;color:${ac.text || '#475569'};line-height:1.2">${rowLabel}</span>
+          <span style="font-size:9px;font-weight:700;color:var(--white);background:var(--pine);padding:1px 6px;border-radius:10px;display:inline-block;width:fit-content">${total}</span>
         </div>
         ${cells}
       </div>`;
@@ -1840,7 +1738,7 @@ function renderTimeline() {
   main.innerHTML = `
     <div class="tl-wrapper">
       <div class="tl-container">
-        ${semRow}${headRow}${pilarRows}
+        ${semRow}${headRow}${areaRows}
       </div>
     </div>`;
   setupTimelineDnD();
@@ -1983,53 +1881,19 @@ function openModal(recordId) {
   if (!proj) return;
   modalId = recordId;
 
-  document.getElementById('modal-dot').style.background = STATUS_COLORS[proj.estatus]||'#94A3B8';
   restoreModalTitleRow(proj.nombre);
-  document.getElementById('modal-status-label').textContent = proj.estatus;
   cancelDelete();
 
-  const pilarSafe = Array.isArray(proj.pilar) ? proj.pilar : (proj.pilar ? [proj.pilar] : []);
-  const pilarBadges = pilarSafe.map(pi=>{
-    const c=PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'};
-    return `<span class="badge" style="background:${c.bg};color:${c.text}">${pi}</span>`;
-  }).join('');
   const prioBadge = proj.prioridad ? `<span class="badge ${prioridadClass(proj.prioridad)}">${proj.prioridad}</span>` : '';
   const mesBadge  = `<span class="badge" style="background:var(--olive);color:var(--pine)">${getDisplayBucket(proj)}</span>`;
   const areaArr2 = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
   const areaModal = areaArr2.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" data-area-badge title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
-  document.getElementById('modal-meta').innerHTML = pilarBadges+prioBadge+mesBadge+areaModal;
+  document.getElementById('modal-meta').innerHTML = prioBadge+mesBadge+areaModal;
 
-  document.getElementById('modal-select').innerHTML =
-    STATUS_OPTIONS.map(s=>`<option value="${s}" ${s===proj.estatus?'selected':''}>${s}</option>`).join('');
   syncGroupToggle(proj.estatus);
-
-  // Pilar toggle
-  const currentPilar = pilarSafe[0] || '';
-  renderPilarToggle(currentPilar);
-  document.getElementById('modal-pilar-select').innerHTML =
-    `<option value="">Sin pilar</option>` +
-    PILARES_ORDER.map(pi=>`<option value="${pi}" ${pi===currentPilar?'selected':''}>${pi}</option>`).join('');
-
-  // Mes de salida selector (modo vista)
-  const mesActual = proj.mes && proj.mes !== 'Backlog' ? proj.mes : '';
-  const mesOpts   = ['Sin mes', ...MONTH_NAMES.map(m => m+' 2026')];
-  document.getElementById('modal-mes-select').innerHTML =
-    mesOpts.map(m => {
-      const val = m === 'Sin mes' ? '' : m;
-      return `<option value="${val}" ${val===mesActual?'selected':''}>${m}</option>`;
-    }).join('');
-  document.getElementById('modal-mes-bar').style.display = '';
 
   const projAreas = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
   renderAreaToggle(projAreas);
-
-  const linkVal = proj.link || '';
-  document.getElementById('modal-link-input').value = linkVal;
-  const goBtn = document.getElementById('modal-link-go');
-  if (linkVal) { goBtn.href = linkVal; goBtn.style.display = ''; }
-  else { goBtn.style.display = 'none'; }
-
-  renderTodoStepper(proj);
   renderModalDesc(proj.desc);
   document.getElementById('modal-attach-section').style.display = '';
   renderAttachments(recordId);
@@ -2047,7 +1911,7 @@ function closeModal() {
   document.getElementById('similar-preview-panel').classList.remove('open');
   modalId = null;
   modalMode = 'view';
-  createContext = { mes: null, pilar: '' };
+  createContext = { mes: null };
   const sp = document.getElementById('similar-panel');
   if (sp) sp.style.display = 'none';
 }
@@ -2081,30 +1945,19 @@ function updateAreaFromModal(area) {
   if (idx >= 0) areas.splice(idx, 1); else areas.push(area);
   proj.area = areas;
   saveLocal();
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.area]: areas });
   renderAreaToggle(areas);
   // Refresh meta badges in modal header
   const areaModal = areas.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
   const meta = document.getElementById('modal-meta');
   if (meta) {
-    // replace just the area badges (keep pilar/prioridad/mes badges)
+    // replace just the area badges (keep prioridad/mes badges)
     meta.querySelectorAll('[data-area-badge]').forEach(b => b.remove());
     meta.insertAdjacentHTML('beforeend', areas.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" data-area-badge title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join(''));
   }
   // Update card badges
   const cardEl = document.getElementById(`kcard-${proj.id}`);
   if (cardEl) { cardEl.outerHTML = renderKCard(proj); }
-}
-
-function renderPilarToggle(activePilar) {
-  const container = document.getElementById('pilar-toggle');
-  if (!container) return;
-  const options = [{ val:'', label:'Sin pilar', bg:'#F1F5F9', text:'#475569' },
-    ...PILARES_ORDER.map(pi => { const c=PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'}; return {val:pi,label:pi,bg:c.bg,text:c.text}; })];
-  container.innerHTML = options.map(o => {
-    const isActive = o.val === activePilar;
-    const style = isActive ? `background:${o.bg};color:${o.text};border-color:${o.text}40` : '';
-    return `<button class="ptoggle-btn${isActive?' active':''}" style="${style}" data-pilar="${o.val}" onclick="updatePilarFromModal('${o.val}')">${o.label}</button>`;
-  }).join('');
 }
 
 function syncGroupToggle(estatus) {
@@ -2129,28 +1982,20 @@ async function setGroupFromModal(group) {
 // ── PATCH estatus (modal) ─────────────────────────────────────
 async function updateStatusFromModal(newStatus) {
   if (modalMode === 'create') {
-    const color = STATUS_COLORS[newStatus]||'#94A3B8';
-    document.getElementById('modal-dot').style.background = color;
-    document.getElementById('modal-status-label').textContent = newStatus;
-    document.getElementById('modal-select').value = newStatus;
     syncGroupToggle(newStatus);
-    renderTodoStepper({ estatus: newStatus });
     return;
   }
   if (!modalId) return;
   const proj = allProjects.find(p=>p.id===modalId);
   if (!proj||newStatus===proj.estatus) return;
   const prevStatus = proj.estatus;
-  const spinner=document.getElementById('modal-spinner'),
-        dot=document.getElementById('modal-dot'), label=document.getElementById('modal-status-label');
+  const spinner=document.getElementById('modal-spinner');
   spinner.style.display='block';
   try {
     proj.estatus=newStatus;
     saveLocal();
-    const color=STATUS_COLORS[newStatus]||'#94A3B8';
-    dot.style.background=color; label.textContent=newStatus;
+    patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: newStatus });
     syncGroupToggle(newStatus);
-    renderTodoStepper(proj);
     document.querySelector(`.tl-bar[data-id="${modalId}"]`)?.style.setProperty('background',STATUS_GROUPS[getStatusGroup(newStatus)].color);
     const newGc = STATUS_GROUPS[getStatusGroup(newStatus)];
     const kBadge = document.querySelector(`#kcard-${modalId} .k-status-badge`);
@@ -2169,153 +2014,7 @@ async function updateStatusFromModal(newStatus) {
   } finally { spinner.style.display='none'; }
 }
 
-// ── PATCH pilar (modal) ───────────────────────────────────────
-async function updatePilarFromModal(newPilar) {
-  if (modalMode === 'create') {
-    renderPilarToggle(newPilar);
-    document.getElementById('modal-pilar-select').value = newPilar;
-    return;
-  }
-  if (!modalId) return;
-  const proj = allProjects.find(p=>p.id===modalId);
-  if (!proj) return;
-  const prevPilar = proj.pilar[0]||'';
-  if (newPilar === prevPilar) return;
-  const select  = document.getElementById('modal-pilar-select');
-  const spinner = document.getElementById('modal-pilar-spinner');
-  const swatch  = document.getElementById('modal-pilar-swatch');
-  const label   = document.getElementById('modal-pilar-label');
-  spinner.style.display='block';
-  try {
-    proj.pilar = newPilar ? [newPilar] : [];
-    saveLocal();
-    renderPilarToggle(newPilar);
-    // Actualiza badge en header del modal
-    const pilarBadges = proj.pilar.map(pi=>{
-      const c=PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'};
-      return `<span class="badge" style="background:${c.bg};color:${c.text}">${pi}</span>`;
-    }).join('');
-    const prioBadge = proj.prioridad ? `<span class="badge ${prioridadClass(proj.prioridad)}">${proj.prioridad}</span>` : '';
-    const mesBadge  = `<span class="badge" style="background:var(--olive);color:var(--pine)">${getDisplayBucket(proj)}</span>`;
-    const areaArr3 = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
-    const areaModal2 = areaArr3.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
-    document.getElementById('modal-meta').innerHTML = pilarBadges+prioBadge+mesBadge+areaModal2;
-    // Actualiza badges en kanban card si está visible
-    const kCard = document.getElementById(`kcard-${modalId}`);
-    if (kCard) {
-      const metaDiv = kCard.querySelector('.k-card-meta');
-      if (metaDiv) {
-        const newBadgeHtml = proj.pilar.map(pi => {
-          const c = PILAR_COLORS[pi]||{bg:'#F1F5F9',text:'#475569'};
-          return `<span class="badge" data-pilar="${pi}" style="background:${c.bg};color:${c.text};font-size:9px;padding:2px 7px">${pi}</span>`;
-        }).join('');
-        const prioBadge = proj.prioridad
-          ? `<span class="badge ${prioridadClass(proj.prioridad)}" style="font-size:9px;padding:2px 7px">${proj.prioridad}</span>` : '';
-        metaDiv.innerHTML = newBadgeHtml + prioBadge;
-      }
-    }
-    showToast(`✓ Pilar: ${newPilar||'sin pilar'}`, 'success');
-  } catch(err) {
-    proj.pilar = prevPilar ? [prevPilar] : [];
-    select.value = prevPilar;
-    showToast(`Error al actualizar pilar`, 'error');
-  } finally { select.disabled=false; spinner.style.display='none'; }
-}
 
-// ── PATCH mes (modal) ────────────────────────────────────────
-function updateMesFromModal(newMes) {
-  if (modalMode === 'create') return; // en creación se lee al hacer submit
-  if (!modalId) return;
-  const proj = allProjects.find(p => p.id === modalId);
-  if (!proj) return;
-  // Actualizar mes y semestre en memoria
-  if (!newMes) {
-    proj.mes = 'Backlog';
-    if (proj.semestre !== 'H2 2026') proj.semestre = 'Backlog';
-  } else {
-    proj.mes = newMes;
-    proj.semestre = H1_MONTHS.has(newMes) ? 'H1 2026' : 'H2 2026';
-  }
-  saveLocal();
-  renderProjects();
-  showToast(`✓ Mes: ${newMes || 'Sin mes'}`, 'success');
-}
-
-function updateLinkFromModal(val) {
-  const clean = val.trim();
-  const goBtn = document.getElementById('modal-link-go');
-  let valid = false;
-  try { new URL(clean); valid = true; } catch {}
-  if (valid) { goBtn.href = clean; goBtn.style.display = ''; }
-  else { goBtn.style.display = 'none'; }
-  if (modalMode === 'create') return;
-  if (!modalId) return;
-  const proj = allProjects.find(p => p.id === modalId);
-  if (!proj) return;
-  proj.link = clean || null;
-  saveLocal();
-  // Update card badge without full re-render
-  const cardEl = document.getElementById(`kcard-${proj.id}`);
-  if (cardEl) {
-    const existing = cardEl.querySelector('.k-link-badge');
-    if (proj.link && !existing) {
-      const badgesWrap = cardEl.querySelector('.k-card-meta > div:last-child');
-      if (badgesWrap) badgesWrap.insertAdjacentHTML('afterbegin', `<a class="k-link-badge" href="${escapeHtml(proj.link)}" target="_blank" rel="noopener" title="${escapeHtml(proj.link)}" onclick="event.stopPropagation()"><svg viewBox="0 0 13 13" fill="none"><path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8M8 1h4m0 0v4m0-4L5.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`);
-    } else if (!proj.link && existing) {
-      existing.remove();
-    } else if (proj.link && existing) {
-      existing.href = proj.link;
-      existing.title = proj.link;
-    }
-  }
-}
-
-// ── To-do stepper (modal) ─────────────────────────────────────
-
-const TODO_STEPS = ['Definición del problema','Validación','Diseño','Lista para sprint'];
-
-function renderTodoStepper(proj) {
-  const container = document.getElementById('modal-todo-stepper');
-  container.style.display = '';
-  const currentIdx = TODO_STEPS.indexOf(proj.estatus);
-  // If status is past the To-do phase (En desarrollo, Lanzado), all steps are done
-  // If status is before To-do phase (Nueva Captura) or unknown, none are done
-  const group = getStatusGroup(proj.estatus);
-  let effectiveIdx;
-  if (currentIdx >= 0) {
-    effectiveIdx = currentIdx; // active step inside the list
-  } else if (group === 'En desarrollo' || group === 'Completado') {
-    effectiveIdx = TODO_STEPS.length; // all done
-  } else {
-    effectiveIdx = -1; // none done
-  }
-  const STEP_LABELS = ['En definición','Validación','Diseño','Lista para Sprint'];
-  const stepsHtml = TODO_STEPS.map((s, i) => {
-    let cls = '';
-    if (i < effectiveIdx) cls = 'done';
-    else if (i === effectiveIdx) cls = 'active';
-    const inner = i < effectiveIdx ? '✓' : (i + 1);
-    const clickable = (getStatusGroup(proj.estatus) === 'To-do' || group === 'Backlog') ? `onclick="clickTodoStep('${s}')"` : '';
-    return `<div class="todo-step ${cls}" ${clickable}>
-      <div class="todo-step-circle">${inner}</div>
-      <div class="todo-step-label">${STEP_LABELS[i]}</div>
-    </div>`;
-  }).join('');
-  container.innerHTML = `<div class="todo-stepper">${stepsHtml}</div>`;
-}
-
-async function clickTodoStep(status) {
-  if (modalMode === 'create') {
-    // In create mode just update the UI via updateStatusFromModal
-    await updateStatusFromModal(status);
-    const proj = { estatus: status };
-    renderTodoStepper(proj);
-    return;
-  }
-  await updateStatusFromModal(status);
-  const proj = allProjects.find(p => p.id === modalId);
-  if (proj) renderTodoStepper(proj);
-}
 
 // ── Edición descripción (modal) ───────────────────────────────
 
@@ -2362,6 +2061,7 @@ async function saveDesc() {
   try {
     proj.desc = newDesc;
     saveLocal();
+    patchAirtable(proj._atId, { [AT_DASH_FIELDS.desc]: newDesc });
     renderModalDesc(proj.desc);
     showToast('✓ Descripción actualizada', 'success');
   } catch(err) {
@@ -2440,7 +2140,6 @@ function generatePDFReport() {
 
   const completado = allProjects.filter(p => getStatusGroup(p.estatus) === 'Completado');
   const enDes      = allProjects.filter(p => getStatusGroup(p.estatus) === 'En desarrollo');
-  const todo       = allProjects.filter(p => getStatusGroup(p.estatus) === 'To-do');
   const backlog    = allProjects.filter(p => getStatusGroup(p.estatus) === 'Backlog');
 
   const ST_COLOR = {
@@ -2450,7 +2149,6 @@ function generatePDFReport() {
   };
 
   function projectRow(p, showMes) {
-    const pilarArr = Array.isArray(p.pilar) ? p.pilar : (p.pilar ? [p.pilar] : []);
     const color    = ST_COLOR[p.estatus] || '#94A3B8';
     const bucket   = getDisplayBucket(p);
     const mesLabel = bucket === 'H2 sin mes' ? '2do Sem' : bucket === 'Backlog' ? '—' : bucket.split(' ')[0];
@@ -2458,7 +2156,6 @@ function generatePDFReport() {
     return `<tr>
       <td class="col-name">${p.nombre}</td>
       <td><span class="spill" style="background:${color}18;color:${color};border:1px solid ${color}40">${p.estatus}</span></td>
-      <td class="col-pilar">${pilarArr.join(', ') || '—'}</td>
       ${showMes ? `<td class="col-mes">${mesLabel}</td>` : ''}
       <td class="col-desc">${desc}</td>
     </tr>`;
@@ -2477,18 +2174,14 @@ function generatePDFReport() {
   let completadoRows = '';
   for (const lbl of monthOrderDesc) {
     if (!compByMonth[lbl] || !compByMonth[lbl].length) continue;
-    completadoRows += `<tr class="month-row"><td colspan="4">${lbl}</td></tr>`;
+    completadoRows += `<tr class="month-row"><td colspan="3">${lbl}</td></tr>`;
     completadoRows += compByMonth[lbl].map(p => projectRow(p, false)).join('');
   }
 
   let enCursoRows = '';
   if (enDes.length) {
-    enCursoRows += `<tr class="group-sep"><td colspan="5">En desarrollo</td></tr>`;
+    enCursoRows += `<tr class="group-sep"><td colspan="4">En desarrollo</td></tr>`;
     enCursoRows += enDes.map(p => projectRow(p, true)).join('');
-  }
-  if (todo.length) {
-    enCursoRows += `<tr class="group-sep" style="color:#92400E;background:#FFFBF0;border-color:#FDE68A"><td colspan="5">To-do</td></tr>`;
-    enCursoRows += todo.map(p => projectRow(p, true)).join('');
   }
 
   const backlogRows = [...backlog].sort((a,b)=>(b.votes||0)-(a.votes||0))
@@ -2523,8 +2216,7 @@ table{width:100%;border-collapse:collapse}
 th{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#616161;text-align:left;padding:6px 8px;border-bottom:1.5px solid #DDF0EE;background:#FAFEFE}
 td{padding:7px 8px;border-bottom:1px solid #F0F7F6;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-.col-name{font-weight:500;width:22%;font-size:11px}
-.col-pilar{color:#616161;font-size:9.5px;width:14%}
+.col-name{font-weight:500;width:26%;font-size:11px}
 .col-mes{color:#27BCB0;font-weight:600;font-size:9.5px;width:52px;text-align:center}
 .col-desc{color:#475569;font-size:9.5px;line-height:1.5}
 .spill{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap;display:inline-block}
@@ -2546,27 +2238,26 @@ tr:last-child td{border-bottom:none}
 
 <div class="metrics">
   <div class="mbox"><div class="mval" style="color:#94A3B8">${backlog.length}</div><div class="mlbl"><span class="mdot" style="background:#94A3B8"></span>Backlog</div></div>
-  <div class="mbox"><div class="mval" style="color:#F59E0B">${todo.length}</div><div class="mlbl"><span class="mdot" style="background:#F59E0B"></span>To-do</div></div>
   <div class="mbox"><div class="mval" style="color:#27BCB0">${enDes.length}</div><div class="mlbl"><span class="mdot" style="background:#27BCB0"></span>En desarrollo</div></div>
   <div class="mbox"><div class="mval" style="color:#16A34A">${completado.length}</div><div class="mlbl"><span class="mdot" style="background:#16A34A"></span>Completados</div></div>
 </div>
 
 <div class="section">
   <div class="sec-hd"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-title">Qué se ha logrado</span><span class="sec-cnt">${completado.length} proyectos</span></div>
-  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Pilar</th><th>Descripción</th></tr></thead>
-  <tbody>${completadoRows || '<tr><td colspan="4" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos completados aún</td></tr>'}</tbody></table>
+  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Descripción</th></tr></thead>
+  <tbody>${completadoRows || '<tr><td colspan="3" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos completados aún</td></tr>'}</tbody></table>
 </div>
 
 <div class="section">
-  <div class="sec-hd"><div class="sec-dot" style="background:#27BCB0"></div><span class="sec-title">Qué sigue — En curso</span><span class="sec-cnt">${enDes.length + todo.length} proyectos</span></div>
-  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Pilar</th><th>Mes</th><th>Descripción</th></tr></thead>
-  <tbody>${enCursoRows || '<tr><td colspan="5" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos en curso</td></tr>'}</tbody></table>
+  <div class="sec-hd"><div class="sec-dot" style="background:#27BCB0"></div><span class="sec-title">Qué sigue — En curso</span><span class="sec-cnt">${enDes.length} proyectos</span></div>
+  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Mes</th><th>Descripción</th></tr></thead>
+  <tbody>${enCursoRows || '<tr><td colspan="4" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos en curso</td></tr>'}</tbody></table>
 </div>
 
 <div class="section">
   <div class="sec-hd"><div class="sec-dot" style="background:#94A3B8"></div><span class="sec-title">Backlog — Ideas y próximos proyectos</span><span class="sec-cnt">${backlog.length} proyectos</span></div>
-  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Pilar</th><th>Descripción</th></tr></thead>
-  <tbody>${backlogRows || '<tr><td colspan="4" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos en backlog</td></tr>'}</tbody></table>
+  <table><thead><tr><th>Proyecto</th><th>Estatus</th><th>Descripción</th></tr></thead>
+  <tbody>${backlogRows || '<tr><td colspan="3" style="color:#999;font-style:italic;padding:12px 8px">Sin proyectos en backlog</td></tr>'}</tbody></table>
 </div>
 
 <div class="footer">
@@ -2608,6 +2299,11 @@ function getNotes(projectId) {
 }
 function saveNotes(projectId, notes) {
   localStorage.setItem(NOTES_NS + projectId, JSON.stringify(notes));
+  // Sync bitácora a Airtable en background
+  const proj = allProjects.find(p => p.id === projectId);
+  if (proj?._atId) {
+    patchAirtable(proj._atId, { [AT_DASH_FIELDS.bitacora]: JSON.stringify(notes) });
+  }
 }
 
 function formatNoteDate(ts) {
@@ -2625,11 +2321,11 @@ function renderNotes(projectId) {
   _noteTimers.forEach(t => clearTimeout(t));
   _noteTimers = [];
 
-  const notes = getNotes(projectId).slice().sort((a, b) => b.createdAt - a.createdAt);
+  const notes = getNotes(projectId).slice().sort((a, b) => a.createdAt - b.createdAt);
   if (countEl) countEl.textContent = notes.length || '';
 
   if (notes.length === 0) {
-    container.innerHTML = '<p class="notes-empty">Sin anotaciones aún.</p>';
+    container.innerHTML = '<p class="notes-empty">Sin entradas aún.</p>';
     return;
   }
 
@@ -2643,13 +2339,17 @@ function renderNotes(projectId) {
       ? `<button class="note-edit-btn" onclick="startEditNote('${n.id}','${projectId}')">Editar</button>`
       : '';
     return `<div class="note-item" id="note-${n.id}">
-      <div class="note-meta">
-        <span class="note-date">${formatNoteDate(n.createdAt)}${editedStr}</span>
-        ${editBtn}
+      <div class="note-dot"></div>
+      <div class="note-content">
+        <div class="note-meta">
+          <span class="note-date">${formatNoteDate(n.createdAt)}${editedStr}</span>
+          ${editBtn}
+        </div>
+        <div class="note-body" id="note-body-${n.id}">${escapeHtml(n.text).replace(/\n/g,'<br>')}</div>
       </div>
-      <div class="note-body" id="note-body-${n.id}">${escapeHtml(n.text).replace(/\n/g,'<br>')}</div>
     </div>`;
   }).join('');
+  container.scrollTop = container.scrollHeight;
 
   // Schedule re-render when each editable note expires
   notes.forEach(n => {
@@ -2808,8 +2508,123 @@ function setupAttachDropZone(projectId) {
   });
 }
 
+// ── Review Mode ─────────────────────────────────────────────
+let _rvQueue = [], _rvIndex = 0, _rvPublished = 0, _rvPassed = 0;
+
+function startReview() {
+  _rvQueue = [...allProjects];
+  _rvIndex = 0; _rvPublished = 0; _rvPassed = 0;
+  document.getElementById('rv-card-wrap').style.display = '';
+  document.getElementById('rv-end').classList.remove('active');
+  document.getElementById('review-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderReviewCard();
+}
+
+function closeReview() {
+  document.getElementById('review-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function renderReviewCard() {
+  if (_rvIndex >= _rvQueue.length) { showReviewEnd(); return; }
+  const p = _rvQueue[_rvIndex];
+  const total = _rvQueue.length;
+  document.getElementById('rv-progress-label').textContent = `${_rvIndex + 1} de ${total}`;
+  document.getElementById('rv-progress-fill').style.width = `${(_rvIndex / total) * 100}%`;
+
+  const group = getStatusGroup(p.estatus);
+  const gc = STATUS_GROUPS[group] || STATUS_GROUPS['Backlog'];
+  const areaArr = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
+  const areaBadges = areaArr.map(a => {
+    const info = AREA_COLORS[a];
+    return info ? `<span class="badge" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 8px">${info.emoji} ${a}</span>` : '';
+  }).join('');
+  const statusBadge = `<span class="badge" style="background:${gc.color}22;color:${gc.color};font-size:9px;padding:2px 8px">${group}</span>`;
+
+  document.getElementById('rv-badges').innerHTML = areaBadges + statusBadge;
+  document.getElementById('rv-title').textContent = p.nombre;
+  document.getElementById('rv-textarea').value = '';
+
+  const card = document.getElementById('rv-card');
+  card.classList.remove('anim-enter', 'anim-exit-left', 'anim-exit-right');
+  void card.offsetWidth;
+  card.classList.add('anim-enter');
+  setTimeout(() => document.getElementById('rv-textarea').focus(), 260);
+}
+
+function reviewAdvance(direction) {
+  const card = document.getElementById('rv-card');
+  card.classList.remove('anim-enter', 'anim-exit-left', 'anim-exit-right');
+  void card.offsetWidth;
+  card.classList.add(direction === 'left' ? 'anim-exit-left' : 'anim-exit-right');
+  setTimeout(() => { _rvIndex++; renderReviewCard(); }, 190);
+}
+
+function reviewPass() { _rvPassed++; reviewAdvance('left'); }
+
+function reviewPublish() {
+  const text = document.getElementById('rv-textarea').value.trim();
+  if (text && _rvQueue[_rvIndex]) {
+    const p = _rvQueue[_rvIndex];
+    const notes = getNotes(p.id);
+    notes.push({ id: 'n' + Date.now(), text, createdAt: Date.now(), editedAt: null });
+    saveNotes(p.id, notes);
+    _rvPublished++;
+  }
+  reviewAdvance('right');
+}
+
+function showReviewEnd() {
+  document.getElementById('rv-card-wrap').style.display = 'none';
+  document.getElementById('rv-end').classList.add('active');
+  document.getElementById('rv-progress-label').textContent = `${_rvQueue.length} de ${_rvQueue.length}`;
+  document.getElementById('rv-progress-fill').style.width = '100%';
+  document.getElementById('rv-end-sub').textContent =
+    `${_rvPublished} entrada${_rvPublished !== 1 ? 's' : ''} publicada${_rvPublished !== 1 ? 's' : ''} · ${_rvPassed} proyecto${_rvPassed !== 1 ? 's' : ''} pasado${_rvPassed !== 1 ? 's' : ''}`;
+}
+
 // ── Init ────────────────────────────────────────────────────
 loadProjects();
 </script>
+
+<!-- ── Review Overlay ──────────────────────────────────────── -->
+<div id="review-overlay" class="review-overlay">
+  <div class="review-topbar">
+    <button class="review-close-btn" onclick="closeReview()">×</button>
+    <div class="review-progress-wrap">
+      <span class="review-progress-label" id="rv-progress-label"></span>
+      <div class="review-progress-bar"><div class="review-progress-fill" id="rv-progress-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="review-card-wrap" id="rv-card-wrap">
+    <div class="review-card" id="rv-card">
+      <div class="review-card-badges" id="rv-badges"></div>
+      <div class="review-card-title" id="rv-title"></div>
+      <textarea class="review-textarea" id="rv-textarea" placeholder="Nueva entrada en la bitácora…" rows="4"></textarea>
+      <div class="review-actions">
+        <button class="review-pass-btn" onclick="reviewPass()">Pasar</button>
+        <button class="review-publish-btn" onclick="reviewPublish()">
+          <svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Publicar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-end" id="rv-end">
+    <div class="review-end-icon">
+      <svg viewBox="0 0 24 24" fill="none" width="30" height="30"><path d="M5 12l5 5L19 7" stroke="#27BCB0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2 class="review-end-title">¡Revisión completa!</h2>
+    <p class="review-end-sub" id="rv-end-sub"></p>
+    <p class="review-end-question">¿Quieres agregar un proyecto nuevo?</p>
+    <div class="review-end-actions">
+      <button class="review-end-add" onclick="closeReview(); setTimeout(()=>openNewProjectModal(null),120)">+ Agregar proyecto</button>
+      <button class="review-end-done" onclick="closeReview()">Finalizar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
