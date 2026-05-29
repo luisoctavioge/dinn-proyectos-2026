@@ -241,6 +241,19 @@
 
     /* Timeline DnD drop target */
     .tl-data-cell.tl-drop-over { outline:2px dashed var(--teal);outline-offset:-2px;background:rgba(39,188,176,.08) !important; }
+    /* Gantt section */
+    .tl-gantt-section { border-bottom:2px solid #DDF0EE;background:var(--white); }
+    .tl-gantt-title { display:flex;align-items:center;gap:8px;padding:8px 12px;background:#F0FAF9;border-bottom:1px solid #DDF0EE;font-size:10px;font-weight:700;color:var(--pine);text-transform:uppercase;letter-spacing:.6px; }
+    .tl-gantt-row { display:grid;grid-template-columns:140px repeat(12,1fr);min-height:34px;border-bottom:1px solid #EEF6F5;align-items:center; }
+    .tl-gantt-row:last-child { border-bottom:none; }
+    .tl-gantt-label { padding:4px 12px;font-size:10px;font-weight:600;color:var(--elm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #DDF0EE;position:sticky;left:0;background:inherit;z-index:5;height:100%;display:flex;align-items:center; }
+    .tl-gantt-bar { height:22px;border-radius:11px;display:flex;align-items:center;padding:0 10px;gap:6px;font-size:9px;font-weight:600;color:rgba(255,255,255,.95);cursor:pointer;overflow:hidden;white-space:nowrap;transition:opacity var(--t),transform var(--t),box-shadow var(--t);margin:4px 3px;align-self:center; }
+    .tl-gantt-bar:hover { opacity:.88;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.18); }
+    .tl-gantt-bar-dates { font-size:8px;font-weight:500;color:rgba(255,255,255,.75);flex-shrink:0; }
+    .tl-gantt-month-head { display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.4px;border-right:1px solid #EEF6F5;padding:6px 2px; }
+    .tl-gantt-month-head.is-today { background:#FFF8F8;color:#DC2626; }
+    .tl-gantt-cell { border-right:1px solid #EEF6F5;min-height:34px;position:relative; }
+    .tl-gantt-cell.is-today { background:rgba(220,38,38,.025); }
 
     /* Tooltip */
     #tl-tooltip { position:fixed;z-index:500;background:var(--elm);color:#fff;font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;padding:5px 10px;border-radius:6px;pointer-events:none;white-space:nowrap;max-width:280px;white-space:normal;line-height:1.4;box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:0;transition:opacity .12s ease;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease; }
@@ -350,6 +363,7 @@
     .modal-desc-cancel { font-family:'Poppins',sans-serif;font-size:12px;color:var(--gray-txt);background:var(--olive);border:none;border-radius:var(--radius-sm);padding:7px 12px;cursor:pointer; }
 
     /* ── Attachments ───────────────────────────────────────────── */
+    input[type="date"].add-card-input { color-scheme:light; }
     .modal-attach-section { margin-top:20px;border-top:1px solid var(--olive);padding-top:14px; }
     .modal-attach-label { font-size:10px;font-weight:700;color:#B0BEC5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px; }
     .attach-drop-zone { border:1.5px dashed #DDF0EE;border-radius:var(--radius-md);padding:14px 16px;text-align:center;cursor:pointer;transition:all var(--t);background:#FAFFFE; }
@@ -480,6 +494,19 @@
       <div class="modal-area-section">
         <span class="modal-section-label">Categorías</span>
         <div class="pilar-toggle" id="categoria-toggle"></div>
+      </div>
+      <div class="modal-area-section" id="modal-dates-section">
+        <span class="modal-section-label">Fechas</span>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">
+            Inicio
+            <input type="date" id="modal-fecha-inicio" class="add-card-input" style="width:160px;font-size:12px;" onchange="saveFechas()" />
+          </label>
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">
+            Fin
+            <input type="date" id="modal-fecha-fin" class="add-card-input" style="width:160px;font-size:12px;" onchange="saveFechas()" />
+          </label>
+        </div>
       </div>
       <div class="modal-attach-section" id="modal-attach-section">
         <div class="modal-attach-label">Archivos adjuntos</div>
@@ -654,8 +681,10 @@ const AT_DASH_FIELDS = {
   semestre:  'fldZalbBLBHrmrRQo',
   mes:       'fldXFvWNgP0n8DyRJ',
   link:      'fld9KYXW9OfzmXRux',
-  votos:     'fldkIOo73R2ozmCJ7',
-  idApp:     'fldhFiXHVKp4ZTsT3',
+  votos:       'fldkIOo73R2ozmCJ7',
+  idApp:       'fldhFiXHVKp4ZTsT3',
+  fechaInicio: 'fldBYiiVPOZFEnglT',
+  fechaFin:    'fld4o6GnBR52YYJQA',
 };
 
 // ── Helper: PATCH un registro en la tabla Dashboard ───────────
@@ -678,6 +707,8 @@ async function createInAirtable(proj) {
     };
     if (proj.area) fields[AT_DASH_FIELDS.area] = proj.area;
     if (proj.categoria?.length) fields[AT_DASH_FIELDS.categoria] = proj.categoria;
+    if (proj.fechaInicio) fields[AT_DASH_FIELDS.fechaInicio] = proj.fechaInicio;
+    if (proj.fechaFin)    fields[AT_DASH_FIELDS.fechaFin]    = proj.fechaFin;
     const res = await atFetch(AT_DASH_URL, { method: 'POST', body: { fields } });
     const data = await res.json();
     return data.id;
@@ -726,9 +757,11 @@ async function importFromAirtable() {
       categoria,
       semestre:  f[AT_DASH_FIELDS.semestre] || 'Backlog',
       mes:       f[AT_DASH_FIELDS.mes]      || 'Backlog',
-      link:      f[AT_DASH_FIELDS.link]     || '',
-      votes:     typeof f[AT_DASH_FIELDS.votos] === 'number' ? f[AT_DASH_FIELDS.votos] : 0,
-      prioridad: '',
+      link:        f[AT_DASH_FIELDS.link]     || '',
+      votes:       typeof f[AT_DASH_FIELDS.votos] === 'number' ? f[AT_DASH_FIELDS.votos] : 0,
+      prioridad:   '',
+      fechaInicio: f[AT_DASH_FIELDS.fechaInicio] || '',
+      fechaFin:    f[AT_DASH_FIELDS.fechaFin]    || '',
     };
   });
 }
@@ -1162,6 +1195,10 @@ function cardMesChange(e, id) {
   proj.mes      = newMes || 'Backlog';
   proj.semestre = newMes ? (H1_MONTHS.has(newMes) ? 'H1 2026' : 'H2 2026') : 'Backlog';
   saveLocal();
+  patchAirtable(proj._atId, {
+    [AT_DASH_FIELDS.mes]:      proj.mes,
+    [AT_DASH_FIELDS.semestre]: proj.semestre,
+  });
   showToast(`✓ Mes: ${newMes || 'Sin mes'}`, 'success');
 }
 
@@ -1352,8 +1389,13 @@ function setupStatusDnD() {
 
 // ── Mover mes (local) ─────────────────────────────────────────
 function patchMes(recordId, newBucket, prevBucket, proj) {
+  const newSem = H1_MONTHS.has(newBucket) ? 'H1 2026' : H2_MONTHS.has(newBucket) ? 'H2 2026' : 'Backlog';
+  proj.semestre = newSem;
   saveLocal();
-  patchAirtable(proj._atId, { [AT_DASH_FIELDS.mes]: newBucket });
+  patchAirtable(proj._atId, {
+    [AT_DASH_FIELDS.mes]:      newBucket,
+    [AT_DASH_FIELDS.semestre]: newSem,
+  });
   showToast(`✓ Movido a ${newBucket==='H2 sin mes'?'Segundo Semestre':newBucket}`,'success');
 }
 
@@ -1519,6 +1561,9 @@ function openNewProjectModal(mes, defaultStatus = 'Definición del problema') {
   modalId   = null;
   createContext = { mes };
   document.getElementById('modal-card').classList.add('create-mode');
+  document.getElementById('modal-dates-section').style.display = '';
+  document.getElementById('modal-fecha-inicio').value = '';
+  document.getElementById('modal-fecha-fin').value = '';
 
   // Título → input
   const row = document.getElementById('modal-title-row');
@@ -1582,15 +1627,17 @@ function createProject() {
   btn.disabled = true; btn.textContent = 'Creando…';
 
   const newProj = {
-    id:        genId(),
-    nombre:    name,
+    id:          genId(),
+    nombre:      name,
     estatus,
-    desc:      desc || '',
-    area:      _selectedArea || '',
-    categoria: [..._selectedCategorias],
-    prioridad: '',
-    semestre:  'Backlog',
-    mes:       'Backlog',
+    desc:        desc || '',
+    area:        _selectedArea || '',
+    categoria:   [..._selectedCategorias],
+    prioridad:   '',
+    semestre:    'Backlog',
+    mes:         'Backlog',
+    fechaInicio: document.getElementById('modal-fecha-inicio')?.value || '',
+    fechaFin:    document.getElementById('modal-fecha-fin')?.value    || '',
   };
   allProjects.push(newProj);
   saveLocal();
@@ -1664,10 +1711,11 @@ function submitNewCard(mes) {
 
   try {
     const newMes = (mes!=='H2 sin mes' && mes!=='Backlog') ? mes : 'Backlog';
-    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', area:'', categoria:[], prioridad:'', semestre:sem, mes:newMes };
+    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', area:'', categoria:[], prioridad:'', semestre:sem, mes:newMes, fechaInicio:'', fechaFin:'' };
     allProjects.push(newProj);
     saveLocal();
     updateMetrics(allProjects);
+    createInAirtable(newProj).then(atId => { if (atId) { newProj._atId = atId; saveLocal(); } });
 
     // Inject card into DOM before the form
     const body = document.getElementById(`body-${slugify(mes)}`);
@@ -1703,6 +1751,75 @@ function submitNewCard(mes) {
 // ─────────────────────────────────────────────────────────────
 // ── TIMELINE (columnas por mes) ──────────────────────────────
 // ─────────────────────────────────────────────────────────────
+
+// ── Gantt helpers ─────────────────────────────────────────────
+const GANTT_MONTHS = MONTH_NAMES.map(m => m + ' 2026'); // Jan–Dec 2026
+
+function dateToGanttCol(dateStr) {
+  if (!dateStr) return -1;
+  const d = new Date(dateStr + 'T12:00:00');
+  const label = MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
+  return GANTT_MONTHS.indexOf(label); // 0–11, -1 if out of range
+}
+
+function fmtDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('es-MX', { day:'numeric', month:'short' });
+}
+
+function buildGanttSection(projects) {
+  const withDates = projects.filter(p => p.fechaInicio && p.fechaFin);
+  if (!withDates.length) return '';
+
+  const now12 = new Date(); const curLabel = MONTH_NAMES[now12.getMonth()] + ' ' + now12.getFullYear();
+  const todayCol = GANTT_MONTHS.indexOf(curLabel); // 0-based, -1 if not 2026
+
+  const headCells = GANTT_MONTHS.map((m, i) =>
+    `<div class="tl-gantt-month-head${i === todayCol ? ' is-today' : ''}">${m.slice(0,3).toUpperCase()}</div>`
+  ).join('');
+
+  const rows = withDates.map(p => {
+    const sg = getStatusGroup(p.estatus);
+    const color = STATUS_GROUPS[sg]?.color || 'var(--pine)';
+    let startCol = dateToGanttCol(p.fechaInicio);
+    let endCol   = dateToGanttCol(p.fechaFin);
+    // Clamp to visible range
+    if (startCol < 0) startCol = 0;
+    if (endCol < 0)   endCol   = 11;
+    if (endCol > 11)  endCol   = 11;
+    if (startCol > 11) return ''; // completely out of range
+    // grid-column is 1-based; col 1 = label, cols 2-13 = months
+    const gStart = startCol + 2;
+    const gEnd   = endCol   + 3; // end is exclusive
+
+    // Build empty grid cells for background
+    const bgCells = GANTT_MONTHS.map((_, i) =>
+      `<div class="tl-gantt-cell${i === todayCol ? ' is-today' : ''}"></div>`
+    ).join('');
+
+    return `
+      <div class="tl-gantt-row" style="cursor:pointer;" onclick="openModal('${p.id}')">
+        <div class="tl-gantt-label" title="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)}</div>
+        <div class="tl-gantt-bar" style="background:${color};grid-column:${gStart}/${gEnd};" onclick="event.stopPropagation();openModal('${p.id}')">
+          <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${escapeHtml(p.nombre)}</span>
+          <span class="tl-gantt-bar-dates">${fmtDate(p.fechaInicio)} → ${fmtDate(p.fechaFin)}</span>
+        </div>
+      </div>`;
+  }).filter(Boolean).join('');
+
+  if (!rows) return '';
+
+  return `
+    <div class="tl-gantt-section">
+      <div class="tl-gantt-title">📅 Gantt — proyectos con fechas (${withDates.length})</div>
+      <div class="tl-gantt-row" style="background:#FAFEFE;min-height:28px;">
+        <div style="border-right:1px solid #DDF0EE;position:sticky;left:0;background:#FAFEFE;height:100%;"></div>
+        ${headCells}
+      </div>
+      ${rows}
+    </div>`;
+}
 
 function renderTimeline() {
   const main = document.getElementById('main-content');
@@ -1794,9 +1911,11 @@ function renderTimeline() {
       </div>`;
   }).join('');
 
+  const ganttSection = buildGanttSection(projects);
   main.innerHTML = `
     <div class="tl-wrapper">
       <div class="tl-container">
+        ${ganttSection}
         ${semRow}${headRow}${areaRows}
       </div>
     </div>`;
@@ -1957,6 +2076,9 @@ function openModal(recordId) {
   renderAttachments(recordId);
   setupAttachDropZone(recordId);
   document.getElementById('modal-card').classList.remove('create-mode');
+  document.getElementById('modal-fecha-inicio').value = proj.fechaInicio || '';
+  document.getElementById('modal-fecha-fin').value    = proj.fechaFin    || '';
+  document.getElementById('modal-dates-section').style.display = '';
   renderNotes(recordId);
 
   document.getElementById('modal-overlay').classList.add('open');
@@ -1998,6 +2120,19 @@ function renderCategoriaToggle(activeCats) {
     const style = isActive ? `background:${ci.bg};color:${ci.text};border-color:${ci.text}40` : '';
     return `<button class="ptoggle-btn${isActive?' active':''}" style="${style}" onclick="updateCategoriaFromModal('${c}')">${c}</button>`;
   }).join('');
+}
+
+function saveFechas() {
+  if (!modalId) return;
+  const proj = allProjects.find(p => p.id === modalId);
+  if (!proj) return;
+  proj.fechaInicio = document.getElementById('modal-fecha-inicio').value || '';
+  proj.fechaFin    = document.getElementById('modal-fecha-fin').value    || '';
+  saveLocal();
+  patchAirtable(proj._atId, {
+    [AT_DASH_FIELDS.fechaInicio]: proj.fechaInicio || null,
+    [AT_DASH_FIELDS.fechaFin]:    proj.fechaFin    || null,
+  });
 }
 
 function updateAreaFromModal(area) {
