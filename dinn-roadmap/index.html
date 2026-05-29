@@ -700,7 +700,7 @@ async function createInAirtable(proj) {
   try {
     const fields = {
       [AT_DASH_FIELDS.nombre]:   proj.nombre,
-      [AT_DASH_FIELDS.estatus]:  proj.estatus,
+      [AT_DASH_FIELDS.estatus]:  getStatusGroup(proj.estatus),
       [AT_DASH_FIELDS.semestre]: proj.semestre || 'Backlog',
       [AT_DASH_FIELDS.mes]:      proj.mes || 'Backlog',
       [AT_DASH_FIELDS.idApp]:    proj.id,
@@ -711,6 +711,7 @@ async function createInAirtable(proj) {
     if (proj.fechaFin)    fields[AT_DASH_FIELDS.fechaFin]    = proj.fechaFin;
     const res = await atFetch(AT_DASH_URL, { method: 'POST', body: { fields } });
     const data = await res.json();
+    if (!data.id) { console.warn('[AT CREATE] error:', data); return null; }
     return data.id;
   } catch(e) { console.warn('[AT CREATE]', e); return null; }
 }
@@ -1347,7 +1348,7 @@ function setupStatusDnD() {
 
       // Actualizar local + badge
       proj.estatus = newEstatus;
-      patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: newEstatus });
+      patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: getStatusGroup(newEstatus) });
 
       // Completado y Archivado re-render fully
       if (newGroup === 'Completado' || prevGroup === 'Completado' || newGroup === 'Archivado' || prevGroup === 'Archivado') {
@@ -2217,7 +2218,7 @@ async function updateStatusFromModal(newStatus) {
   try {
     proj.estatus=newStatus;
     saveLocal();
-    patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: newStatus });
+    patchAirtable(proj._atId, { [AT_DASH_FIELDS.estatus]: getStatusGroup(newStatus) });
     syncGroupToggle(newStatus);
     document.querySelector(`.tl-bar[data-id="${modalId}"]`)?.style.setProperty('background',STATUS_GROUPS[getStatusGroup(newStatus)].color);
     const newGc = STATUS_GROUPS[getStatusGroup(newStatus)];
