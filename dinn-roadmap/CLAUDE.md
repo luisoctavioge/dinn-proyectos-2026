@@ -17,16 +17,19 @@ DINN es la app de inversión y débito de Banco Actinver.
 | Tabla         | `Proyectos`                            |
 | Table ID      | `tbl9dnfWuOX9AWjjE`                    |
 
-### Campos (Field IDs)
+### Campos del Dashboard (Field IDs — tabla operativa que usa la app)
 
-| Field ID               | Nombre en Airtable        | Tipo             |
-|------------------------|---------------------------|------------------|
-| `fldPfQnkalgfOlEFd`    | Nombre                    | Text             |
-| `fldhBmfdglPCANjq3`    | Estatus                   | singleSelect     |
-| `fldMZtRGHHd8pvVYv`    | Descripción               | Long text        |
-| `fldtzMNqSb5mejE7m`    | Pilar                     | multipleSelects  |
-| `flds5LPdTaIwjm13W`    | Prioridad inicial         | singleSelect     |
-| `fldE0cnERdlC392Hf`    | Semestre                  | singleSelect     |
+| Field ID               | Nombre en Airtable        | Tipo             | Notas                        |
+|------------------------|---------------------------|------------------|------------------------------|
+| `fldH0kqMo7SLpPdsK`    | Nombre                    | singleLineText   |                              |
+| `fldvAQSaJuzoqfNWK`    | Estatus                   | singleSelect     |                              |
+| `fldEKeweipBAIAsTE`    | Área                      | singleSelect     | 1 área por proyecto          |
+| `fld3gOX9u7ndPdgeC`    | Categoría                 | multipleSelects  | Varias categorías por proyecto |
+| `fld8uzIn8Gk5rQHkH`    | Descripción               | multilineText    |                              |
+| `fldZalbBLBHrmrRQo`    | Semestre                  | singleSelect     |                              |
+| `fldXFvWNgP0n8DyRJ`    | Mes                       | singleLineText   |                              |
+| `fldkIOo73R2ozmCJ7`    | Votos                     | number           |                              |
+| `fldhFiXHVKp4ZTsT3`    | ID_App                    | singleLineText   |                              |
 
 ### Endpoint base
 

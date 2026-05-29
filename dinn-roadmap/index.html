@@ -477,6 +477,10 @@
         <span class="modal-section-label">Área</span>
         <div class="pilar-toggle" id="area-toggle"></div>
       </div>
+      <div class="modal-area-section">
+        <span class="modal-section-label">Categorías</span>
+        <div class="pilar-toggle" id="categoria-toggle"></div>
+      </div>
       <div class="modal-attach-section" id="modal-attach-section">
         <div class="modal-attach-label">Archivos adjuntos</div>
         <div class="attach-list" id="attach-list"></div>
@@ -568,21 +572,42 @@
     <div class="filters" style="justify-content:space-between">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span class="filter-label">Área</span>
-        <button class="pill active" data-area="Todos"          onclick="setAreaFilter('Todos')">Todos</button>
-        <button class="pill" data-area="TDD"                 onclick="setAreaFilter('TDD')">💳 TDD</button>
-        <button class="pill" data-area="Servicio"            onclick="setAreaFilter('Servicio')">🎧 Servicio</button>
-        <button class="pill" data-area="Operaciones"         onclick="setAreaFilter('Operaciones')">⚙️ Operaciones</button>
-        <button class="pill" data-area="Producto"            onclick="setAreaFilter('Producto')">📱 Producto</button>
-        <button class="pill" data-area="Regulatorios"        onclick="setAreaFilter('Regulatorios')">📋 Regulatorios</button>
-        <button class="pill" data-area="Data"                onclick="setAreaFilter('Data')">📊 Data</button>
-        <button class="pill" data-area="Adquisición"         onclick="setAreaFilter('Adquisición')">🎯 Adquisición</button>
-        <button class="pill" data-area="Comunicación"        onclick="setAreaFilter('Comunicación')">📣 Comunicación</button>
+        <button class="pill active" data-area="Todos"                onclick="setAreaFilter('Todos')">Todos</button>
+        <button class="pill" data-area="Fondos"                     onclick="setAreaFilter('Fondos')">💰 Fondos</button>
+        <button class="pill" data-area="TDD"                        onclick="setAreaFilter('TDD')">💳 TDD</button>
+        <button class="pill" data-area="Cuenta Eje"                 onclick="setAreaFilter('Cuenta Eje')">🏦 Cuenta Eje</button>
+        <button class="pill" data-area="CX"                         onclick="setAreaFilter('CX')">🎧 CX</button>
+        <button class="pill" data-area="Adquisición"                onclick="setAreaFilter('Adquisición')">🎯 Adquisición</button>
+        <button class="pill" data-area="Educación Financiera"       onclick="setAreaFilter('Educación Financiera')">📚 Edu. Financiera</button>
+        <button class="pill" data-area="Comunicación"               onclick="setAreaFilter('Comunicación')">📣 Comunicación</button>
+        <button class="pill" data-area="Data"                       onclick="setAreaFilter('Data')">📊 Data</button>
       </div>
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         <input type="text" id="search-input" class="search-input" placeholder="Buscar proyecto…" oninput="setSearchQuery(this.value)">
         <button class="search-clear" id="search-clear" onclick="clearSearch()" style="display:none">×</button>
       </div>
+    </div>
+    <div class="filters">
+      <span class="filter-label">Categoría</span>
+      <button class="pill active" data-cat="Todos"                    onclick="setCategoriaFilter('Todos')">Todas</button>
+      <button class="pill" data-cat="Producto"                       onclick="setCategoriaFilter('Producto')">Producto</button>
+      <button class="pill" data-cat="Regulatorios"                   onclick="setCategoriaFilter('Regulatorios')">Regulatorios</button>
+      <button class="pill" data-cat="CRM"                            onclick="setCategoriaFilter('CRM')">CRM</button>
+      <button class="pill" data-cat="Promociones"                    onclick="setCategoriaFilter('Promociones')">Promociones</button>
+      <button class="pill" data-cat="Portabilidad de nómina"         onclick="setCategoriaFilter('Portabilidad de nómina')">Portabilidad</button>
+      <button class="pill" data-cat="Incidencias"                    onclick="setCategoriaFilter('Incidencias')">Incidencias</button>
+      <button class="pill" data-cat="Brechas"                        onclick="setCategoriaFilter('Brechas')">Brechas</button>
+      <button class="pill" data-cat="CAT"                            onclick="setCategoriaFilter('CAT')">CAT</button>
+      <button class="pill" data-cat="NPS"                            onclick="setCategoriaFilter('NPS')">NPS</button>
+      <button class="pill" data-cat="Sprint"                         onclick="setCategoriaFilter('Sprint')">Sprint</button>
+      <button class="pill" data-cat="Marca"                          onclick="setCategoriaFilter('Marca')">Marca</button>
+      <button class="pill" data-cat="RRSS"                           onclick="setCategoriaFilter('RRSS')">RRSS</button>
+      <button class="pill" data-cat="Sitio web"                      onclick="setCategoriaFilter('Sitio web')">Sitio web</button>
+      <button class="pill" data-cat="Reporting"                      onclick="setCategoriaFilter('Reporting')">Reporting</button>
+      <button class="pill" data-cat="Dashboards"                     onclick="setCategoriaFilter('Dashboards')">Dashboards</button>
+      <button class="pill" data-cat="Tagging"                        onclick="setCategoriaFilter('Tagging')">Tagging</button>
+      <button class="pill" data-cat="Otros"                          onclick="setCategoriaFilter('Otros')">Otros</button>
     </div>
   </div>
 </header>
@@ -620,16 +645,17 @@ async function atFetch(url, { method = 'GET', body } = {}) {
 const AT_DASH_TABLE  = 'tblhkJEqRZW00Jbbc';
 const AT_DASH_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_DASH_TABLE}`;
 const AT_DASH_FIELDS = {
-  nombre:   'fldH0kqMo7SLpPdsK',
-  estatus:  'fldvAQSaJuzoqfNWK',
-  area:     'fld3gOX9u7ndPdgeC',
-  bitacora: 'fld31iyeYP5IxBmrd',
-  desc:     'fld8uzIn8Gk5rQHkH',
-  semestre: 'fldZalbBLBHrmrRQo',
-  mes:      'fldXFvWNgP0n8DyRJ',
-  link:     'fld9KYXW9OfzmXRux',
-  votos:    'fldkIOo73R2ozmCJ7',
-  idApp:    'fldhFiXHVKp4ZTsT3',
+  nombre:    'fldH0kqMo7SLpPdsK',
+  estatus:   'fldvAQSaJuzoqfNWK',
+  area:      'fldEKeweipBAIAsTE',  // singleSelect — 1 área por proyecto
+  categoria: 'fld3gOX9u7ndPdgeC',  // multipleSelects — varias categorías
+  bitacora:  'fld31iyeYP5IxBmrd',
+  desc:      'fld8uzIn8Gk5rQHkH',
+  semestre:  'fldZalbBLBHrmrRQo',
+  mes:       'fldXFvWNgP0n8DyRJ',
+  link:      'fld9KYXW9OfzmXRux',
+  votos:     'fldkIOo73R2ozmCJ7',
+  idApp:     'fldhFiXHVKp4ZTsT3',
 };
 
 // ── Helper: PATCH un registro en la tabla Dashboard ───────────
@@ -643,17 +669,16 @@ async function patchAirtable(atId, fields) {
 // ── Helper: Crear registro en Dashboard → devuelve atId ───────
 async function createInAirtable(proj) {
   try {
-    const res = await atFetch(AT_DASH_URL, {
-      method: 'POST',
-      body: { fields: {
-        [AT_DASH_FIELDS.nombre]:   proj.nombre,
-        [AT_DASH_FIELDS.estatus]:  proj.estatus,
-        [AT_DASH_FIELDS.area]:     proj.area || [],
-        [AT_DASH_FIELDS.semestre]: proj.semestre || 'Backlog',
-        [AT_DASH_FIELDS.mes]:      proj.mes || 'Backlog',
-        [AT_DASH_FIELDS.idApp]:    proj.id,
-      }},
-    });
+    const fields = {
+      [AT_DASH_FIELDS.nombre]:   proj.nombre,
+      [AT_DASH_FIELDS.estatus]:  proj.estatus,
+      [AT_DASH_FIELDS.semestre]: proj.semestre || 'Backlog',
+      [AT_DASH_FIELDS.mes]:      proj.mes || 'Backlog',
+      [AT_DASH_FIELDS.idApp]:    proj.id,
+    };
+    if (proj.area) fields[AT_DASH_FIELDS.area] = proj.area;
+    if (proj.categoria?.length) fields[AT_DASH_FIELDS.categoria] = proj.categoria;
+    const res = await atFetch(AT_DASH_URL, { method: 'POST', body: { fields } });
     const data = await res.json();
     return data.id;
   } catch(e) { console.warn('[AT CREATE]', e); return null; }
@@ -687,19 +712,23 @@ async function importFromAirtable() {
     if (bitacora) {
       try { localStorage.setItem('dinn-notes-' + idApp, bitacora); } catch(e) {}
     }
+    const rawArea = f[AT_DASH_FIELDS.area];
+    const area = rawArea ? (typeof rawArea === 'object' ? rawArea.name : String(rawArea)) : '';
+    const rawCat = f[AT_DASH_FIELDS.categoria];
+    const categoria = Array.isArray(rawCat) ? rawCat.map(c => typeof c === 'object' ? c.name : c) : [];
     return {
       id:        idApp,
       _atId:     r.id,
       nombre:    f[AT_DASH_FIELDS.nombre]   || '(sin nombre)',
       estatus:   f[AT_DASH_FIELDS.estatus]  || 'En desarrollo',
       desc:      f[AT_DASH_FIELDS.desc]     || '',
-      area:      Array.isArray(f[AT_DASH_FIELDS.area]) ? f[AT_DASH_FIELDS.area] : [],
+      area,
+      categoria,
       semestre:  f[AT_DASH_FIELDS.semestre] || 'Backlog',
       mes:       f[AT_DASH_FIELDS.mes]      || 'Backlog',
       link:      f[AT_DASH_FIELDS.link]     || '',
       votes:     typeof f[AT_DASH_FIELDS.votos] === 'number' ? f[AT_DASH_FIELDS.votos] : 0,
       prioridad: '',
-      pilar:     [],
     };
   });
 }
@@ -771,14 +800,34 @@ function getStatusGroup(estatus) {
 }
 
 const AREA_COLORS = {
-  'TDD':          { bg:'#DBEAFE', text:'#1E40AF', emoji:'💳' },
-  'Servicio':     { bg:'#FEF3C7', text:'#92400E', emoji:'🎧' },
-  'Operaciones':  { bg:'#E0F2FE', text:'#0369A1', emoji:'⚙️' },
-  'Producto':     { bg:'#D1FAE5', text:'#065F46', emoji:'📱' },
-  'Regulatorios': { bg:'#FEE2E2', text:'#991B1B', emoji:'📋' },
-  'Data':         { bg:'#EDE9FE', text:'#5B21B6', emoji:'📊' },
-  'Adquisición':  { bg:'#FCE7F3', text:'#9D174D', emoji:'🎯' },
-  'Comunicación': { bg:'#FEF9C3', text:'#854D0E', emoji:'📣' },
+  'Fondos':               { bg:'#DBEAFE', text:'#1E40AF', emoji:'💰' },
+  'TDD':                  { bg:'#CCFBF1', text:'#0F766E', emoji:'💳' },
+  'Cuenta Eje':           { bg:'#E0F2FE', text:'#0369A1', emoji:'🏦' },
+  'CX':                   { bg:'#FEF3C7', text:'#92400E', emoji:'🎧' },
+  'Adquisición':          { bg:'#FCE7F3', text:'#9D174D', emoji:'🎯' },
+  'Educación Financiera': { bg:'#D1FAE5', text:'#065F46', emoji:'📚' },
+  'Comunicación':         { bg:'#FEF9C3', text:'#854D0E', emoji:'📣' },
+  'Data':                 { bg:'#EDE9FE', text:'#5B21B6', emoji:'📊' },
+};
+
+const CATEGORIA_COLORS = {
+  'Producto':              { bg:'#DBEAFE', text:'#1E40AF' },
+  'Regulatorios':          { bg:'#FEE2E2', text:'#991B1B' },
+  'CRM':                   { bg:'#FCE7F3', text:'#9D174D' },
+  'Promociones':           { bg:'#FEF3C7', text:'#92400E' },
+  'Portabilidad de nómina':{ bg:'#E0F2FE', text:'#0369A1' },
+  'Incidencias':           { bg:'#FEE2E2', text:'#DC2626' },
+  'Brechas':               { bg:'#FEF9C3', text:'#854D0E' },
+  'CAT':                   { bg:'#EDE9FE', text:'#5B21B6' },
+  'NPS':                   { bg:'#D1FAE5', text:'#065F46' },
+  'Sprint':                { bg:'#CCFBF1', text:'#0F766E' },
+  'Marca':                 { bg:'#FCE7F3', text:'#BE185D' },
+  'RRSS':                  { bg:'#FEF3C7', text:'#B45309' },
+  'Sitio web':             { bg:'#F0FDF4', text:'#166534' },
+  'Otros':                 { bg:'#F1F5F9', text:'#475569' },
+  'Reporting':             { bg:'#EEF2FF', text:'#4338CA' },
+  'Dashboards':            { bg:'#F0F9FF', text:'#0369A1' },
+  'Tagging':               { bg:'#FDF4FF', text:'#7C3AED' },
 };
 
 const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
@@ -798,13 +847,14 @@ const now = new Date();
 const CURRENT_MONTH = `${MONTH_NAMES[now.getMonth()]} ${now.getFullYear()}`;
 
 // ── Estado ──────────────────────────────────────────────────
-let allProjects        = [];
-let activeAreaFilter   = 'Todos';
-let activeStatusFilter = 'Todos';
-let searchQuery        = '';
-let currentView        = 'cards';
-let modalMode          = 'view';   // 'view' | 'create'
-let createContext      = { mes: null };
+let allProjects          = [];
+let activeAreaFilter     = 'Todos';
+let activeCategoriaFilter = 'Todos';
+let activeStatusFilter   = 'Todos';
+let searchQuery          = '';
+let currentView          = 'cards';
+let modalMode            = 'view';   // 'view' | 'create'
+let createContext        = { mes: null };
 let modalId      = null;
 let dragSrc      = null;
 
@@ -883,15 +933,21 @@ async function loadProjects() {
   // Normalizar datos: garantizar tipos correctos en todos los campos
   let dataNeedsResave = false;
   allProjects = allProjects.map(p => {
-    // Normalize area: always array
+    // Normalize area: string (singleSelect)
     let area = p.area;
-    if (!Array.isArray(area)) { area = area ? [area] : []; dataNeedsResave = true; }
+    if (Array.isArray(area)) { area = area.length ? area[0] : ''; dataNeedsResave = true; }
+    else if (area && typeof area !== 'string') { area = String(area); dataNeedsResave = true; }
+    area = area || '';
+    // Normalize categoria: always array
+    let categoria = p.categoria;
+    if (!Array.isArray(categoria)) { categoria = categoria ? [categoria] : []; dataNeedsResave = true; }
     return {
       ...p,
       nombre:    (p.nombre && p.nombre !== 'undefined')   ? String(p.nombre)    : '(sin nombre)',
       estatus:   p.estatus   ? String(p.estatus)   : 'Nueva Captura',
       desc:      p.desc      ? String(p.desc)      : '',
       area,
+      categoria,
       prioridad: p.prioridad ? String(p.prioridad) : '',
       semestre:  p.semestre  ? String(p.semestre)  : 'Backlog',
       mes:       p.mes       ? String(p.mes)       : 'Backlog',
@@ -908,8 +964,8 @@ async function loadProjects() {
       allProjects.push(patch);
       patchesChanged = true;
     } else {
-      // Propagar campos nuevos (como `area`) sin sobreescribir edits del usuario
-      ['area'].forEach(field => {
+      // Propagar campos nuevos sin sobreescribir edits del usuario
+      ['area', 'categoria'].forEach(field => {
         if (existing[field] === undefined && patch[field] !== undefined) {
           existing[field] = patch[field];
           patchesChanged = true;
@@ -929,6 +985,12 @@ async function loadProjects() {
 function setAreaFilter(area) {
   activeAreaFilter = area;
   document.querySelectorAll('.pill[data-area]').forEach(b => b.classList.toggle('active', b.dataset.area===area));
+  renderProjects();
+}
+
+function setCategoriaFilter(cat) {
+  activeCategoriaFilter = cat;
+  document.querySelectorAll('.pill[data-cat]').forEach(b => b.classList.toggle('active', b.dataset.cat===cat));
   renderProjects();
 }
 
@@ -960,12 +1022,11 @@ function clearSearch() {
 
 function filteredProjects() {
   let list = allProjects;
-  if (activeAreaFilter !== 'Todos') list = list.filter(p => { const a = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []); return a.includes(activeAreaFilter); });
+  if (activeAreaFilter !== 'Todos') list = list.filter(p => p.area === activeAreaFilter);
+  if (activeCategoriaFilter !== 'Todos') list = list.filter(p => Array.isArray(p.categoria) && p.categoria.includes(activeCategoriaFilter));
   if (searchQuery) list = list.filter(p => (p.nombre||'').toLowerCase().includes(searchQuery) || (p.desc||'').toLowerCase().includes(searchQuery));
   if (activeStatusFilter === 'Todos') return list;
-  // Grupos
   if (STATUS_GROUPS[activeStatusFilter]) return list.filter(p=>STATUS_GROUPS[activeStatusFilter].statuses.includes(p.estatus));
-  // Estatus exacto
   return list.filter(p => p.estatus === activeStatusFilter);
 }
 
@@ -1060,19 +1121,21 @@ function voteProject(id) {
 
 function renderKCard(p) {
   const gc = STATUS_GROUPS[getStatusGroup(p.estatus)] || STATUS_GROUPS['Backlog'];
-  const areaArr = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
-  const areaBadge = areaArr.map(a => { const info = AREA_COLORS[a]; return info ? `<span class="badge" title="${a}" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 7px">${info.emoji} ${a}</span>` : ''; }).join('');
+  const areaInfo = p.area ? AREA_COLORS[p.area] : null;
+  const areaBadge = p.area
+    ? `<span class="badge" title="${escapeHtml(p.area)}" style="background:${areaInfo?.bg||'#F1F5F9'};color:${areaInfo?.text||'#475569'};font-size:9px;padding:2px 7px">${areaInfo?.emoji||''} ${p.area}</span>`
+    : '';
+  const catBadges = (Array.isArray(p.categoria) ? p.categoria : []).map(c => {
+    const ci = CATEGORIA_COLORS[c];
+    return ci ? `<span class="badge" style="background:${ci.bg};color:${ci.text};font-size:9px;padding:2px 7px">${c}</span>` : '';
+  }).join('');
   const linkBadge = p.link ? `<a class="k-link-badge" href="${escapeHtml(p.link)}" target="_blank" rel="noopener" title="${escapeHtml(p.link)}" onclick="event.stopPropagation()"><svg viewBox="0 0 13 13" fill="none"><path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8M8 1h4m0 0v4m0-4L5.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : '';
-  const bucket = getDisplayBucket(p);
-  // Mes de salida (solo lectura en card; editable desde el modal)
-  const mesLabel = bucket === 'H2 sin mes' ? '2do Sem' : bucket !== 'Backlog' ? bucket.split(' ')[0] : '';
-  const mesSelect = mesLabel ? `<span class="k-mes-badge">${mesLabel}</span>` : '';
   return `
     <div class="k-card" id="kcard-${p.id}" data-id="${p.id}" draggable="true" onclick="handleCardClick(event,'${p.id}')">
       <div class="k-card-body">
         <div class="k-card-title" id="ktitle-${p.id}">${escapeHtml(p.nombre)}</div>
-        <div class="k-card-meta" style="display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:nowrap;margin-top:6px">
-          <div style="display:flex;gap:4px;align-items:center;flex-shrink:0">${linkBadge}${areaBadge}</div>
+        <div class="k-card-meta" style="display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap;margin-top:6px">
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">${linkBadge}${areaBadge}${catBadges}</div>
         </div>
       </div>
     </div>`;
@@ -1430,8 +1493,7 @@ function openSimilarPreview(projId) {
   preview.classList.add('open');
   // Build content
   const gc = STATUS_GROUPS[getStatusGroup(proj.estatus)] || STATUS_GROUPS['Backlog'];
-  const areaArr = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
-  const areaBadges = areaArr.map(a => { const ac = AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
+  const areaBadges = proj.area ? (() => { const ac = AREA_COLORS[proj.area]||{emoji:'🏷️',bg:'#F8FAFC',text:'#475569'}; return `<span class="badge" style="border:1px solid #E2E8F0;background:${ac.bg};color:${ac.text};font-size:11px;padding:2px 5px">${ac.emoji} ${proj.area}</span>`; })() : '';
   const notes = getNotes(projId);
   const lastNote = notes.length ? notes.slice().sort((a,b)=>b.createdAt-a.createdAt)[0] : null;
   document.getElementById('similar-preview-body').innerHTML = `
@@ -1476,8 +1538,10 @@ function openNewProjectModal(mes, defaultStatus = 'Definición del problema') {
 
   // Estatus → pre-llenado según contexto
   syncGroupToggle(defaultStatus);
-  _selectedAreas = [];
-  renderAreaToggle([]);
+  _selectedArea = '';
+  _selectedCategorias = [];
+  renderAreaToggle('');
+  renderCategoriaToggle([]);
 
 
   // Descripción → textarea abierta (opcional)
@@ -1522,7 +1586,8 @@ function createProject() {
     nombre:    name,
     estatus,
     desc:      desc || '',
-    area:      _selectedAreas.length ? [..._selectedAreas] : [],
+    area:      _selectedArea || '',
+    categoria: [..._selectedCategorias],
     prioridad: '',
     semestre:  'Backlog',
     mes:       'Backlog',
@@ -1599,7 +1664,7 @@ function submitNewCard(mes) {
 
   try {
     const newMes = (mes!=='H2 sin mes' && mes!=='Backlog') ? mes : 'Backlog';
-    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', area:[], prioridad:'', semestre:sem, mes:newMes };
+    const newProj = { id:genId(), nombre:name, estatus:'Nueva Captura', desc:'', area:'', categoria:[], prioridad:'', semestre:sem, mes:newMes };
     allProjects.push(newProj);
     saveLocal();
     updateMetrics(allProjects);
@@ -1646,11 +1711,8 @@ function renderTimeline() {
   if (!projects.length) { main.innerHTML='<div class="state-box"><span>No hay proyectos con estos filtros.</span></div>'; return; }
 
   // Group by area × bucket
-  const areasInUse = Object.keys(AREA_COLORS).filter(a =>
-    projects.some(p => (Array.isArray(p.area) ? p.area : (p.area ? [p.area] : [])).includes(a))
-  );
-  // Also include projects with no area under a special "Sin área" row
-  const hasNoArea = projects.some(p => { const a = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []); return a.length === 0; });
+  const areasInUse = Object.keys(AREA_COLORS).filter(a => projects.some(p => p.area === a));
+  const hasNoArea = projects.some(p => !p.area);
   const rows = [...areasInUse, ...(hasNoArea ? ['(Sin área)'] : [])];
 
   // Build data[area][bucket]
@@ -1658,13 +1720,10 @@ function renderTimeline() {
   for (const a of rows) { data[a] = {}; MONTHS.forEach(m => data[a][m] = []); }
   for (const p of projects) {
     const bucket = getDisplayBucket(p);
-    const pAreas = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
-    if (pAreas.length === 0) {
+    if (!p.area) {
       data['(Sin área)'][bucket].push(p);
-    } else {
-      for (const a of pAreas) {
-        if (data[a]) data[a][bucket].push(p);
-      }
+    } else if (data[p.area]) {
+      data[p.area][bucket].push(p);
     }
   }
 
@@ -1886,14 +1945,13 @@ function openModal(recordId) {
 
   const prioBadge = proj.prioridad ? `<span class="badge ${prioridadClass(proj.prioridad)}">${proj.prioridad}</span>` : '';
   const mesBadge  = `<span class="badge" style="background:var(--olive);color:var(--pine)">${getDisplayBucket(proj)}</span>`;
-  const areaArr2 = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
-  const areaModal = areaArr2.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" data-area-badge title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
-  document.getElementById('modal-meta').innerHTML = prioBadge+mesBadge+areaModal;
+  const areaMeta = proj.area ? (() => { const ac = AREA_COLORS[proj.area] || { emoji:'🏷️', bg:'#F8FAFC', text:'#475569' }; return `<span class="badge" data-area-badge title="${proj.area}" style="border:1px solid #E2E8F0;background:${ac.bg};color:${ac.text};font-size:11px;padding:2px 5px">${ac.emoji} ${proj.area}</span>`; })() : '';
+  document.getElementById('modal-meta').innerHTML = prioBadge+mesBadge+areaMeta;
 
   syncGroupToggle(proj.estatus);
 
-  const projAreas = Array.isArray(proj.area) ? proj.area : (proj.area ? [proj.area] : []);
-  renderAreaToggle(projAreas);
+  renderAreaToggle(proj.area || '');
+  renderCategoriaToggle(Array.isArray(proj.categoria) ? proj.categoria : []);
   renderModalDesc(proj.desc);
   document.getElementById('modal-attach-section').style.display = '';
   renderAttachments(recordId);
@@ -1917,45 +1975,74 @@ function closeModal() {
 }
 function handleOverlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
 
-let _selectedAreas = []; // tracks selected areas in create mode
+let _selectedArea = '';       // singleSelect for create mode
+let _selectedCategorias = []; // multipleSelects for create mode
 
-function renderAreaToggle(activeAreas) {
+function renderAreaToggle(activeArea) {
   const container = document.getElementById('area-toggle');
   if (!container) return;
-  const arr = Array.isArray(activeAreas) ? activeAreas : (activeAreas ? [activeAreas] : []);
+  const current = typeof activeArea === 'string' ? activeArea : '';
   container.innerHTML = Object.entries(AREA_COLORS).map(([a, c]) => {
-    const isActive = arr.includes(a);
+    const isActive = current === a;
     const style = isActive ? `background:${c.bg};color:${c.text};border-color:${c.text}40` : '';
     return `<button class="ptoggle-btn${isActive?' active':''}" style="${style}" onclick="updateAreaFromModal('${a}')">${c.emoji} ${a}</button>`;
   }).join('');
 }
 
+function renderCategoriaToggle(activeCats) {
+  const container = document.getElementById('categoria-toggle');
+  if (!container) return;
+  const arr = Array.isArray(activeCats) ? activeCats : [];
+  container.innerHTML = Object.entries(CATEGORIA_COLORS).map(([c, ci]) => {
+    const isActive = arr.includes(c);
+    const style = isActive ? `background:${ci.bg};color:${ci.text};border-color:${ci.text}40` : '';
+    return `<button class="ptoggle-btn${isActive?' active':''}" style="${style}" onclick="updateCategoriaFromModal('${c}')">${c}</button>`;
+  }).join('');
+}
+
 function updateAreaFromModal(area) {
   if (modalMode === 'create') {
-    if (_selectedAreas.includes(area)) _selectedAreas = _selectedAreas.filter(a => a !== area);
-    else _selectedAreas.push(area);
-    renderAreaToggle(_selectedAreas);
+    _selectedArea = _selectedArea === area ? '' : area;
+    renderAreaToggle(_selectedArea);
     return;
   }
   if (!modalId) return;
   const proj = allProjects.find(p => p.id === modalId);
   if (!proj) return;
-  const areas = Array.isArray(proj.area) ? [...proj.area] : (proj.area ? [proj.area] : []);
-  const idx = areas.indexOf(area);
-  if (idx >= 0) areas.splice(idx, 1); else areas.push(area);
-  proj.area = areas;
+  proj.area = proj.area === area ? '' : area;
   saveLocal();
-  patchAirtable(proj._atId, { [AT_DASH_FIELDS.area]: areas });
-  renderAreaToggle(areas);
-  // Refresh meta badges in modal header
-  const areaModal = areas.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join('');
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.area]: proj.area || null });
+  renderAreaToggle(proj.area);
+  // Refresh meta area badge
   const meta = document.getElementById('modal-meta');
   if (meta) {
-    // replace just the area badges (keep prioridad/mes badges)
     meta.querySelectorAll('[data-area-badge]').forEach(b => b.remove());
-    meta.insertAdjacentHTML('beforeend', areas.map(a => { const ac=AREA_COLORS[a]||{emoji:'🏷️'}; return `<span class="badge" data-area-badge title="${a}" style="border:1px solid #E2E8F0;background:#F8FAFC;font-size:11px;padding:2px 5px">${ac.emoji} ${a}</span>`; }).join(''));
+    if (proj.area) {
+      const ac = AREA_COLORS[proj.area] || { emoji:'🏷️', bg:'#F8FAFC', text:'#475569' };
+      meta.insertAdjacentHTML('beforeend', `<span class="badge" data-area-badge title="${proj.area}" style="border:1px solid #E2E8F0;background:${ac.bg};color:${ac.text};font-size:11px;padding:2px 5px">${ac.emoji} ${proj.area}</span>`);
+    }
   }
-  // Update card badges
+  const cardEl = document.getElementById(`kcard-${proj.id}`);
+  if (cardEl) { cardEl.outerHTML = renderKCard(proj); }
+}
+
+function updateCategoriaFromModal(cat) {
+  if (modalMode === 'create') {
+    if (_selectedCategorias.includes(cat)) _selectedCategorias = _selectedCategorias.filter(c => c !== cat);
+    else _selectedCategorias.push(cat);
+    renderCategoriaToggle(_selectedCategorias);
+    return;
+  }
+  if (!modalId) return;
+  const proj = allProjects.find(p => p.id === modalId);
+  if (!proj) return;
+  const cats = Array.isArray(proj.categoria) ? [...proj.categoria] : [];
+  const idx = cats.indexOf(cat);
+  if (idx >= 0) cats.splice(idx, 1); else cats.push(cat);
+  proj.categoria = cats;
+  saveLocal();
+  patchAirtable(proj._atId, { [AT_DASH_FIELDS.categoria]: cats.length ? cats : null });
+  renderCategoriaToggle(cats);
   const cardEl = document.getElementById(`kcard-${proj.id}`);
   if (cardEl) { cardEl.outerHTML = renderKCard(proj); }
 }
@@ -2535,14 +2622,10 @@ function renderReviewCard() {
 
   const group = getStatusGroup(p.estatus);
   const gc = STATUS_GROUPS[group] || STATUS_GROUPS['Backlog'];
-  const areaArr = Array.isArray(p.area) ? p.area : (p.area ? [p.area] : []);
-  const areaBadges = areaArr.map(a => {
-    const info = AREA_COLORS[a];
-    return info ? `<span class="badge" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 8px">${info.emoji} ${a}</span>` : '';
-  }).join('');
+  const rvAreaBadge = p.area ? (() => { const info = AREA_COLORS[p.area]; return info ? `<span class="badge" style="background:${info.bg};color:${info.text};font-size:9px;padding:2px 8px">${info.emoji} ${p.area}</span>` : ''; })() : '';
   const statusBadge = `<span class="badge" style="background:${gc.color}22;color:${gc.color};font-size:9px;padding:2px 8px">${group}</span>`;
 
-  document.getElementById('rv-badges').innerHTML = areaBadges + statusBadge;
+  document.getElementById('rv-badges').innerHTML = rvAreaBadge + statusBadge;
   document.getElementById('rv-title').textContent = p.nombre;
   document.getElementById('rv-textarea').value = '';
 
