@@ -701,7 +701,6 @@ async function createInAirtable(proj) {
     const fields = {
       [AT_DASH_FIELDS.nombre]:   proj.nombre,
       [AT_DASH_FIELDS.estatus]:  getStatusGroup(proj.estatus),
-      [AT_DASH_FIELDS.semestre]: proj.semestre || 'Backlog',
       [AT_DASH_FIELDS.mes]:      proj.mes || 'Backlog',
       [AT_DASH_FIELDS.idApp]:    proj.id,
     };
@@ -1198,8 +1197,7 @@ function cardMesChange(e, id) {
   proj.semestre = newMes ? (H1_MONTHS.has(newMes) ? 'H1 2026' : 'H2 2026') : 'Backlog';
   saveLocal();
   patchAirtable(proj._atId, {
-    [AT_DASH_FIELDS.mes]:      proj.mes,
-    [AT_DASH_FIELDS.semestre]: proj.semestre,
+    [AT_DASH_FIELDS.mes]: proj.mes,
   });
   showToast(`✓ Mes: ${newMes || 'Sin mes'}`, 'success');
 }
@@ -1395,8 +1393,7 @@ function patchMes(recordId, newBucket, prevBucket, proj) {
   proj.semestre = newSem;
   saveLocal();
   patchAirtable(proj._atId, {
-    [AT_DASH_FIELDS.mes]:      newBucket,
-    [AT_DASH_FIELDS.semestre]: newSem,
+    [AT_DASH_FIELDS.mes]: newBucket,
   });
   showToast(`✓ Movido a ${newBucket==='H2 sin mes'?'Segundo Semestre':newBucket}`,'success');
 }
